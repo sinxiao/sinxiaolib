@@ -1,0 +1,3 @@
+include ':libcommon'
+include ':app'
+rootProject.name = "sinxiaolib"
