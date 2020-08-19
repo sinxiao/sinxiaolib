@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
-//apply plugin: 'com.github.dcendents.android-maven'
+
 apply plugin: 'com.github.dcendents.android-maven'
-//apply plugin: 'com.novoda.bintray-release' // must be applied after your artifact generating plugin (eg. java / com.android.library)
 
 
 android {
@@ -32,17 +31,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    compileOnly 'com.google.code.gson:gson:2.8.5'
 
 }
 
-//publish {
-//    userOrg = 'sinxiao'
-//    groupId = 'com.sinxiao.common'
-//    artifactId = 'sinxiaolib'
-//    publishVersion = '1.0.0'
-//    desc = 'Oh hi, this is a nice description for a project, right?'
-//    website = 'https://github.com/novoda/bintray-release'
-//}
 
-//https://www.jianshu.com/p/d287db9fae38?from=timeline&isappinstalled=0
 group = 'com.github.sinxiao'
