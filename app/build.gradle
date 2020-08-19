@@ -28,7 +28,8 @@ dependencies {
 //    implementation 'com.xu.sinxiao:commonlib:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
 //    implementation project(":libcommon")
-    implementation 'com.github.sinxiao:sinxiaolib:1.0.2'
+    implementation 'com.github.sinxiao:sinxiaolib:1.0.3'
+    implementation 'com.google.code.gson:gson:2.8.5'
 
 //    testImplementation 'com.xu.sinxiao:commonlib:1.0.0'
 
