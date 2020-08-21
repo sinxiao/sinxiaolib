@@ -243,11 +243,11 @@ public class Utils {
         return cipher.doFinal(content);
     }
 
-    public void saveSpfWithEncrypt(Context context, String key, String vlaue) {
+    public static void saveSpfWithEncrypt(Context context, String key, String vlaue) {
         saveStringToSpf(context, key, encryptAESLocal(vlaue));
     }
 
-    public String getSpfWithEncrypt(Context context, String key) {
+    public static String getSpfWithEncrypt(Context context, String key) {
         String data = getStringFromSpf(context, key);
         if (TextUtils.isEmpty(data)) {
             return "";
