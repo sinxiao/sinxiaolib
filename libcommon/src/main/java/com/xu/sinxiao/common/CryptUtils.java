@@ -48,9 +48,11 @@ public class CryptUtils {
 
     /**
      * 创建AES的秘钥
+     * 创建后的 AES 秘钥，无法在 实际中访问获取。
      *
      * @param alias
      */
+    @Deprecated
     public synchronized static void createSecretKey(String alias) {
         if (keyStore == null) {
             initKeyStore();
@@ -78,9 +80,6 @@ public class CryptUtils {
                 } catch (InvalidAlgorithmParameterException e) {
                     e.printStackTrace();
                 }
-//                SecretKey key = keyGenerator.generateKey();
-//                byte[] data = key.getEncoded();
-//                Log.d(TAG, "SecretKey:" + key);
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             } catch (NoSuchProviderException e) {
@@ -129,48 +128,24 @@ public class CryptUtils {
 
         if (TextUtils.isEmpty(aesKey)) {
             String encypt = Utils.getStringFromSpf(Configer.getInstance().getContext(), alice);
-            Utils.showError("encypt is  >>> " + encypt);
+//            Utils.showError("encypt is  >>> " + encypt);
             if (!TextUtils.isEmpty(encypt)) {
                 aesKey = RSAEncryptUtil.getInstance().decryptString(encypt, Utils.ALICE + "RSA");
             } else {
                 aesKey =
                         UUID.randomUUID().toString();
-                aesKey = aesKey.substring(0, 24);
+                aesKey = aesKey.substring(0, 32);
                 Utils.saveStringToSpf(Configer.getInstance().getContext(), alice, RSAEncryptUtil.getInstance().encryptString(aesKey, Utils.ALICE + "RSA"));
             }
         }
-        Utils.showError("aesKey is  >>> " + aesKey);
+//        Utils.showError("aesKey is  >>> " + aesKey);
     }
 
     public static String decryptNow(String data, String alice) {
         genTheAESKey(alice);
-        Utils.showError("data is  >>> " + data);
-        Utils.showError("alice is  >>> " + alice);
+//        Utils.showError("data is  >>> " + data);
+//        Utils.showError("alice is  >>> " + alice);
         return Utils.dencryptAES(data, aesKey);
-
-//        SecretKey key = getSecretKey(alice);
-//        Cipher cipher = null;
-//        try {
-//            cipher = Cipher.getInstance("AES/GCM/NoPadding");
-//        } catch (NoSuchAlgorithmException e) {
-//            e.printStackTrace();
-//        } catch (NoSuchPaddingException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            cipher.init(Cipher.DECRYPT_MODE, key);
-//            try {
-//                byte[] value = cipher.doFinal(Utils.hexString2Bytes(data));
-//                return new String(value);
-//            } catch (BadPaddingException e) {
-//                e.printStackTrace();
-//            } catch (IllegalBlockSizeException e) {
-//                e.printStackTrace();
-//            }
-//        } catch (InvalidKeyException e) {
-//            e.printStackTrace();
-//        }
-//        return "";
     }
 
 

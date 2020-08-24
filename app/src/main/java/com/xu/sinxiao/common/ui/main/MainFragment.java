@@ -15,8 +15,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.xu.sinxiao.common.AESUtil;
+import com.xu.sinxiao.common.BackgroundExecutor;
 import com.xu.sinxiao.common.Configer;
 import com.xu.sinxiao.common.R;
+import com.xu.sinxiao.common.UIExecutor;
 import com.xu.sinxiao.common.Utils;
 
 public class MainFragment extends Fragment {
@@ -43,19 +45,30 @@ public class MainFragment extends Fragment {
         btnClick.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Utils.saveSpfWithEncrypt(getContext(), "mainTest", "aaaa211223232099494xxxxxxxxxxxjfjfdhshdhuehfjdhjdhfdjh");
-                Utils.showLog("save mainTest ok ");
-                String encrpyData = Utils.getStringFromSpf(getContext(), "mainTest");
-                Utils.showLog("encrpyData is >>> " + encrpyData);
-                String data = Utils.getSpfWithEncrypt(getContext(), "mainTest");
-                Utils.showLog("data is >>> " + data);
-
 //                String data = "xxxxx";
 //                String encrypt = Utils.bytes2HexString(AESUtil.encryptByte2Byte(data.getBytes(), "123456"));
 //                encrypt = Base64.encodeToString(AESUtil.encryptByte2Byte(data.getBytes(), "123456"), Base64.DEFAULT);
 //                Utils.showError(" encrypt >>> " + encrypt);
 //                byte[] datl = AESUtil.decryptByte2Byte(Base64.decode(encrypt, Base64.DEFAULT), "123456");
 //                Utils.showError(" data >>> " + new String(datl));
+                UIExecutor.postRunable(new Runnable() {
+                    @Override
+                    public void run() {
+                        btnClick.setText("on change ....");
+                    }
+                });
+                BackgroundExecutor.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Utils.showError("BackgroundExecutor post ok ....");
+                        Utils.saveSpfWithEncrypt(getContext(), "mainTest", "aaaa211223232099494xxxxxxxxxxxjfjfdhshdhuehfjdhjdhfdjh");
+                        Utils.showLog("save mainTest ok ");
+                        String encrpyData = Utils.getStringFromSpf(getContext(), "mainTest");
+                        Utils.showLog("encrpyData is >>> " + encrpyData);
+                        String data = Utils.getSpfWithEncrypt(getContext(), "mainTest");
+                        Utils.showLog("data is >>> " + data);
+                    }
+                });
             }
         });
     }
