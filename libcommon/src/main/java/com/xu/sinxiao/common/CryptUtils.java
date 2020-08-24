@@ -3,6 +3,7 @@ package com.xu.sinxiao.common;
 import android.os.Build;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.security.PublicKey;
 import java.security.UnrecoverableEntryException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.util.UUID;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -49,7 +51,10 @@ public class CryptUtils {
      *
      * @param alias
      */
-    public static void createSecretKey(String alias) {
+    public synchronized static void createSecretKey(String alias) {
+        if (keyStore == null) {
+            initKeyStore();
+        }
         if (hasAlias(alias)) {
             return;
         }
@@ -63,10 +68,18 @@ public class CryptUtils {
                     keyGenerator.init(new KeyGenParameterSpec.Builder(alias, KeyProperties.PURPOSE_ENCRYPT |
                             KeyProperties.PURPOSE_DECRYPT).setBlockModes(KeyProperties.BLOCK_MODE_GCM)
                             .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE).build());
+
+//                    keyGenerator.initialize(
+////                            new KeyGenParameterSpec.Builder(alias,
+////                                    KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+////                                    .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+////                                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+////                                    .build());
                 } catch (InvalidAlgorithmParameterException e) {
                     e.printStackTrace();
                 }
-                SecretKey key = keyGenerator.generateKey();
+//                SecretKey key = keyGenerator.generateKey();
+//                byte[] data = key.getEncoded();
 //                Log.d(TAG, "SecretKey:" + key);
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
@@ -83,8 +96,16 @@ public class CryptUtils {
      * @return
      */
     public static SecretKey getSecretKey(String alias) {
+        if (keyStore == null) {
+            initKeyStore();
+        }
         try {
             SecretKey secretKey = (SecretKey) keyStore.getKey(alias, null);
+            Log.d(TAG, "SecretKey:" + secretKey);
+            if (secretKey == null) {
+                createSecretKey(alias);
+                secretKey = (SecretKey) keyStore.getKey(alias, null);
+            }
             Log.d(TAG, "SecretKey:" + secretKey);
             return secretKey;
         } catch (NoSuchAlgorithmException e) {
@@ -97,10 +118,73 @@ public class CryptUtils {
         return null;
     }
 
+    private static String aesKey = null;
+
+    public static String encryptNow(String data, String alice) {
+        genTheAESKey(alice);
+        return Utils.encryptAES(data, aesKey);
+    }
+
+    private static void genTheAESKey(String alice) {
+
+        if (TextUtils.isEmpty(aesKey)) {
+            String encypt = Utils.getStringFromSpf(Configer.getInstance().getContext(), alice);
+            Utils.showError("encypt is  >>> " + encypt);
+            if (!TextUtils.isEmpty(encypt)) {
+                aesKey = RSAEncryptUtil.getInstance().decryptString(encypt, Utils.ALICE + "RSA");
+            } else {
+                aesKey =
+                        UUID.randomUUID().toString();
+                aesKey = aesKey.substring(0, 24);
+                Utils.saveStringToSpf(Configer.getInstance().getContext(), alice, RSAEncryptUtil.getInstance().encryptString(aesKey, Utils.ALICE + "RSA"));
+            }
+        }
+        Utils.showError("aesKey is  >>> " + aesKey);
+    }
+
+    public static String decryptNow(String data, String alice) {
+        genTheAESKey(alice);
+        Utils.showError("data is  >>> " + data);
+        Utils.showError("alice is  >>> " + alice);
+        return Utils.dencryptAES(data, aesKey);
+
+//        SecretKey key = getSecretKey(alice);
+//        Cipher cipher = null;
+//        try {
+//            cipher = Cipher.getInstance("AES/GCM/NoPadding");
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchPaddingException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            cipher.init(Cipher.DECRYPT_MODE, key);
+//            try {
+//                byte[] value = cipher.doFinal(Utils.hexString2Bytes(data));
+//                return new String(value);
+//            } catch (BadPaddingException e) {
+//                e.printStackTrace();
+//            } catch (IllegalBlockSizeException e) {
+//                e.printStackTrace();
+//            }
+//        } catch (InvalidKeyException e) {
+//            e.printStackTrace();
+//        }
+//        return "";
+    }
+
 
     private static boolean hasAlias(String alias) {
+        if (keyStore == null) {
+            initKeyStore();
+        }
         try {
-            return keyStore != null && keyStore.containsAlias(alias);
+            if (keyStore != null && keyStore.containsAlias(alias)) {
+                byte[] data = getSecretKey(alias).getEncoded();
+                if (data != null && data.length > 0) {
+                    return true;
+                }
+            }
         } catch (KeyStoreException e) {
             e.printStackTrace();
         }

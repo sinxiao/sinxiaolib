@@ -32,5 +32,6 @@ public class Configer {
     public void init(Context context) {
         this.context = context;
         packageName = context.getPackageName();
+        RSAEncryptUtil.getInstance().init(context, null);
     }
 }

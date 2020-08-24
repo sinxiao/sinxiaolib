@@ -6,19 +6,16 @@ package com.xu.sinxiao.common;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 
 import com.google.gson.Gson;
 
 import java.util.Objects;
 
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-
 public class Utils {
     private static Gson gson = new Gson();
-    private static String ALICE_AES = Configer.getInstance().getPackageName() + "aes_alice";
+    public static String ALICE = Configer.getInstance().getPackageName() + "key_alice";
     private static String hexStr = "0123456789ABCDEF";
     private static String[] binaryArray =
             {"0000", "0001", "0010", "0011",
@@ -47,24 +44,30 @@ public class Utils {
         return context.getSharedPreferences("data", 0).getString(key, "");
     }
 
+    private static byte charToByte(char c) {
+        String chars = "0123456789ABCDEF";
+        byte b = (byte) chars.indexOf(c);
+        return b;
+    }
+
     /**
-     * @param hexString
+     * @param hexStr
      * @return 将十六进制转换为字节数组
      */
-    public static byte[] hexString2Bytes(String hexString) {
-        //hexString的长度对2取整，作为bytes的长度
-        int len = hexString.length() / 2;
-        byte[] bytes = new byte[len];
-        byte high = 0;//字节高四位
-        byte low = 0;//字节低四位
-
-        for (int i = 0; i < len; i++) {
-            //右移四位得到高位
-            high = (byte) ((hexStr.indexOf(hexString.charAt(2 * i))) << 4);
-            low = (byte) hexStr.indexOf(hexString.charAt(2 * i + 1));
-            bytes[i] = (byte) (high | low);//高地位做或运算
+    public static byte[] hexString2Bytes(String hexStr) {
+        if (TextUtils.isEmpty(hexStr) || hexStr.length() == 0) {
+            return null;
         }
-        return bytes;
+        if (hexStr.length() % 2 == 1) {
+            hexStr = "0" + hexStr;
+        }
+        int len = hexStr.length() / 2;
+        byte[] result = new byte[len];
+        char[] chars = hexStr.toCharArray();
+        for (int i = 0; i < len; i++) {
+            result[i] = (byte) (charToByte(chars[i]) << 4 | charToByte(chars[i + 1]));
+        }
+        return result;
     }
 
     /**
@@ -72,16 +75,19 @@ public class Utils {
      * @return 将二进制转换为十六进制字符输出
      */
     public static String bytes2HexString(byte[] bytes) {
-        String result = "";
-        String hex = "";
-        for (int i = 0; i < bytes.length; i++) {
-            //字节高4位
-            hex = String.valueOf(hexStr.charAt((bytes[i] & 0xF0) >> 4));
-            //字节低4位
-            hex += String.valueOf(hexStr.charAt(bytes[i] & 0x0F));
-            result += hex + " ";
+        if (bytes == null) {
+            return "";
         }
-        return result;
+        StringBuffer sb = new StringBuffer();
+        String strInt = "";
+        for (int i = 0; i < bytes.length; i++) {
+            strInt = Integer.toHexString(bytes[i] & 0xFF);
+            if (strInt.length() < 2) {
+                sb.append(0);
+            }
+            sb.append(strInt.toUpperCase());
+        }
+        return sb.toString();
     }
 
     /**
@@ -101,43 +107,25 @@ public class Utils {
         return outStr;
     }
 
+    public static String encryptRSALocal(String value) {
+        return RSAEncryptUtil.getInstance().encryptString(value, ALICE + "RSA");
+    }
+
+    public static String dencryptRSALocal(String data) {
+        return RSAEncryptUtil.getInstance().decryptString(data, ALICE + "RSA");
+    }
+
     public static String encryptAESLocal(String value) {
-        try {
-            CryptUtils.initKeyStore();
-            SecretKey secretKey = CryptUtils.getSecretKey(ALICE_AES);
-            if (secretKey == null) {
-                CryptUtils.createSecretKey(ALICE_AES);
-                secretKey = CryptUtils.getSecretKey(ALICE_AES);
-            }
-            if (secretKey != null) {
-                return bytes2HexString(encryptAESNow(value, secretKey.getEncoded()));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
+        return CryptUtils.encryptNow(value, ALICE + "AES");
     }
 
     public static String dencryptAESLocal(String data) {
-        try {
-            CryptUtils.initKeyStore();
-            SecretKey secretKey = CryptUtils.getSecretKey(ALICE_AES);
-            if (secretKey == null) {
-                CryptUtils.createSecretKey(ALICE_AES);
-                secretKey = CryptUtils.getSecretKey(ALICE_AES);
-            }
-            if (secretKey != null) {
-                return bytes2HexString(dencryptAESNow(hexString2Bytes(data), secretKey.getEncoded()));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
+        return CryptUtils.decryptNow(data, ALICE + "AES");
     }
 
     public static String encryptAES(String data, String password) {
         try {
-            return bytes2HexString(encryptAESNow(data, password));
+            return Base64.encodeToString(AESUtil.encryptByte2Byte(data.getBytes(), password), Base64.DEFAULT);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -146,101 +134,11 @@ public class Utils {
 
     public static String dencryptAES(String value, String password) {
         try {
-            return bytes2HexString(dencryptAESNow(hexString2Bytes(value), password));
+            return new String(AESUtil.decryptByte2Byte(Base64.decode(value, Base64.DEFAULT), password));
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "";
-    }
-
-    public static String dencryptAES(String value, byte[] password) {
-        try {
-            return bytes2HexString(dencryptAESNow(hexString2Bytes(value), password));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
-
-    /**
-     * 这里的password的长度，必须为128或192或256bits.也就是16或24或32byte。否则会报出如下错误：
-     * com.android.org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher$1: Key length not 128/192/256 bits.
-     *
-     * @param content
-     * @param password
-     * @return
-     * @throws Exception
-     */
-    private static byte[] encryptAESNow(String content, String password) throws Exception {
-        // 创建AES秘钥
-        SecretKeySpec key = new SecretKeySpec(password.getBytes(), "AES/CBC/PKCS5PADDING");
-        // 创建密码器
-        Cipher cipher = Cipher.getInstance("AES");
-        // 初始化加密器
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-        // 加密
-        return cipher.doFinal(content.getBytes("UTF-8"));
-    }
-
-    /**
-     * 这里的password的长度，必须为128或192或256bits.也就是16或24或32byte。否则会报出如下错误：
-     * com.android.org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher$1: Key length not 128/192/256 bits.
-     *
-     * @param content
-     * @param password
-     * @return
-     * @throws Exception
-     */
-    private static byte[] encryptAESNow(String content, byte[] password) throws Exception {
-        // 创建AES秘钥
-        SecretKeySpec key = new SecretKeySpec(password, "AES/CBC/PKCS5PADDING");
-        // 创建密码器
-        Cipher cipher = Cipher.getInstance("AES");
-        // 初始化加密器
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-        // 加密
-        return cipher.doFinal(content.getBytes("UTF-8"));
-    }
-
-    /**
-     * 这里的password的长度，必须为128或192或256bits.也就是16或24或32byte。否则会报出如下错误：
-     * com.android.org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher$1: Key length not 128/192/256 bits.
-     *
-     * @param content
-     * @param password
-     * @return
-     * @throws Exception
-     */
-    private static byte[] dencryptAESNow(byte[] content, String password) throws Exception {
-        // 创建AES秘钥
-        SecretKeySpec key = new SecretKeySpec(password.getBytes(), "AES/CBC/PKCS5PADDING");
-        // 创建密码器
-        Cipher cipher = Cipher.getInstance("AES");
-        // 初始化解密器
-        cipher.init(Cipher.DECRYPT_MODE, key);
-        // 解密
-        return cipher.doFinal(content);
-    }
-
-    /**
-     * 这里的password的长度，必须为128或192或256bits.也就是16或24或32byte。否则会报出如下错误：
-     * com.android.org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher$1: Key length not 128/192/256 bits.
-     *
-     * @param content
-     * @param password
-     * @return
-     * @throws Exception
-     */
-    private static byte[] dencryptAESNow(byte[] content, byte[] password) throws Exception {
-        // 创建AES秘钥
-        SecretKeySpec key = new SecretKeySpec(password, "AES/CBC/PKCS5PADDING");
-        // 创建密码器
-        Cipher cipher = Cipher.getInstance("AES");
-        // 初始化解密器
-        cipher.init(Cipher.DECRYPT_MODE, key);
-        // 解密
-        return cipher.doFinal(content);
     }
 
     public static void saveSpfWithEncrypt(Context context, String key, String vlaue) {

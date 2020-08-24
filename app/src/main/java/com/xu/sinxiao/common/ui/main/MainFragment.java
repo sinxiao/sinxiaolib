@@ -8,15 +8,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.xu.sinxiao.common.AESUtil;
+import com.xu.sinxiao.common.Configer;
 import com.xu.sinxiao.common.R;
+import com.xu.sinxiao.common.Utils;
 
 public class MainFragment extends Fragment {
 
     private MainViewModel mViewModel;
+    private Button btnClick;
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -27,6 +33,31 @@ public class MainFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.main_fragment, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Configer.getInstance().init(getContext());
+        btnClick = view.findViewById(R.id.click);
+        btnClick.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                Utils.saveSpfWithEncrypt(getContext(), "mainTest", "aaaa211223232099494xxxxxxxxxxxjfjfdhshdhuehfjdhjdhfdjh");
+                Utils.showLog("save mainTest ok ");
+                String encrpyData = Utils.getStringFromSpf(getContext(), "mainTest");
+                Utils.showLog("encrpyData is >>> " + encrpyData);
+                String data = Utils.getSpfWithEncrypt(getContext(), "mainTest");
+                Utils.showLog("data is >>> " + data);
+
+//                String data = "xxxxx";
+//                String encrypt = Utils.bytes2HexString(AESUtil.encryptByte2Byte(data.getBytes(), "123456"));
+//                encrypt = Base64.encodeToString(AESUtil.encryptByte2Byte(data.getBytes(), "123456"), Base64.DEFAULT);
+//                Utils.showError(" encrypt >>> " + encrypt);
+//                byte[] datl = AESUtil.decryptByte2Byte(Base64.decode(encrypt, Base64.DEFAULT), "123456");
+//                Utils.showError(" data >>> " + new String(datl));
+            }
+        });
     }
 
     @Override
