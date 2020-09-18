@@ -1,7 +1,6 @@
-package ae.payby.android.saladin.business.me.image.selector
+package ae.sinxiao.android.selectimage
 
 import ae.sinxiao.android.qrd.R
-import ae.sinxiao.android.selectimage.*
 import ae.sinxiao.android.selectimage.adapter.ImageAdapter
 import ae.sinxiao.android.selectimage.adapter.PhotoAdapter
 import ae.sinxiao.android.selectimage.listener.OnImageSelectedListener

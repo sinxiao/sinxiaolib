@@ -3,6 +3,8 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <uses-feature
         android:name="android.hardware.camera.autofocus"
@@ -14,7 +16,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <application>
         <activity android:name=".ScanQrdActivity" />
-        <activity android:name="ae.payby.android.saladin.business.me.image.selector.ImageSelectorActivity">
+        <activity android:name="ae.sinxiao.android.selectimage.ImageSelectorActivity">
 
         </activity>
     </application>

@@ -12,12 +12,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.xu.sinxiao.common.BackgroundExecutor;
 import com.xu.sinxiao.common.Configer;
 import com.xu.sinxiao.common.R;
 import com.xu.sinxiao.common.UIExecutor;
 import com.xu.sinxiao.common.Utils;
+
+import java.util.HashMap;
+
+import ae.payby.android.qrd.model.QrdScanResult;
+import ae.sinxiao.android.qrd.ScanQrdActivity;
 
 public class MainFragment extends Fragment {
 
@@ -43,6 +49,24 @@ public class MainFragment extends Fragment {
         btnClick.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
+                HashMap<String, String> exts = new HashMap<>();
+                exts.put(ScanQrdActivity.KEY_Hide_Select_Image, "1");
+                ScanQrdActivity.startScanQrdActivity(getContext(), new ScanQrdActivity.ScanListener() {
+                    @Override
+                    public void onScanSucess(QrdScanResult scanResult) {
+                        Toast.makeText(getContext(), scanResult.getValue(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onScanFail(String msg) {
+
+                    }
+
+                    @Override
+                    public void onScanCancled() {
+
+                    }
+                }, exts);
 //                String data = "xxxxx";
 //                String encrypt = Utils.bytes2HexString(AESUtil.encryptByte2Byte(data.getBytes(), "123456"));
 //                encrypt = Base64.encodeToString(AESUtil.encryptByte2Byte(data.getBytes(), "123456"), Base64.DEFAULT);

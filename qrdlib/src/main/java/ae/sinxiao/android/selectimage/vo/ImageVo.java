@@ -2,7 +2,7 @@ package ae.sinxiao.android.selectimage.vo;
 
 import android.graphics.Bitmap;
 
-import ae.payby.android.saladin.utils.ImageUtils;
+import ae.sinxiao.android.selectimage.ImageUtils;
 
 
 /**
