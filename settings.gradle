@@ -1,3 +1,5 @@
+include ':rxbus_lib'
+include ':qrdlib'
 include ':libcommon'
 include ':app'
 rootProject.name = "sinxiaolib"

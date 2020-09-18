@@ -8,13 +8,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.xu.sinxiao.common.AESUtil;
 import com.xu.sinxiao.common.BackgroundExecutor;
 import com.xu.sinxiao.common.Configer;
 import com.xu.sinxiao.common.R;
