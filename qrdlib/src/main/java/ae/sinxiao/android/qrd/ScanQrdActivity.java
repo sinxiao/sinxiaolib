@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import ae.sinxiao.android.qrd.model.QrdScanResult;
 import ae.sinxiao.android.selectimage.ImageSelectorActivity;
 import ae.sinxiao.android.qrd.core.BGAQRCodeUtil;
 import ae.sinxiao.android.qrd.core.BaseEvent;
@@ -52,7 +53,7 @@ public class ScanQrdActivity extends AppCompatActivity implements QRCodeView.Del
     private int currentEvent;
 
     public static interface ScanListener {
-        void onScanSucess(ae.payby.android.qrd.model.QrdScanResult scanResult);
+        void onScanSucess(QrdScanResult scanResult);
 
         void onScanFail(String msg);
 
@@ -286,7 +287,7 @@ public class ScanQrdActivity extends AppCompatActivity implements QRCodeView.Del
             setTitle("Scan Infor：" + result);
             vibrate();
 //            mZBarView.startSpot(); // 开始识别
-            ae.payby.android.qrd.model.QrdScanResult payByScanResult = new ae.payby.android.qrd.model.QrdScanResult(result);
+            QrdScanResult payByScanResult = new QrdScanResult(result);
             String packageName = getPackageName();
             payByScanResult.setPachageName(packageName);
             if (packageName.equals("ae.payby.android.saladin")) {

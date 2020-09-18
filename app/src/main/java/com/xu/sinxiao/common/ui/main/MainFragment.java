@@ -22,8 +22,8 @@ import com.xu.sinxiao.common.Utils;
 
 import java.util.HashMap;
 
-import ae.payby.android.qrd.model.QrdScanResult;
 import ae.sinxiao.android.qrd.ScanQrdActivity;
+import ae.sinxiao.android.qrd.model.QrdScanResult;
 
 public class MainFragment extends Fragment {
 

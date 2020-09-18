@@ -1,4 +1,4 @@
-package ae.payby.android.qrd.model;
+package ae.sinxiao.android.qrd.model;
 
 import java.io.Serializable;
 import java.net.URI;
