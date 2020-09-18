@@ -50,4 +50,4 @@ repositories {
     mavenCentral()
 }
 
-group = 'com.github.sinxiao'
+group = 'com.github.sinxiao.qrdscan'

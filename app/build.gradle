@@ -28,9 +28,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 //    implementation 'com.xu.sinxiao:commonlib:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
-    implementation project(":libcommon")
+//    implementation project(":libcommon")
     implementation project(":qrdlib")
-//    implementation 'com.github.sinxiao:sinxiaolib:1.0.4'
+    implementation 'com.github.sinxiao:sinxiaolib:1.0.6'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'pub.devrel:easypermissions:3.0.0'
 
