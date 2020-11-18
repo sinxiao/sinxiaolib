@@ -1,0 +1,25 @@
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // 注册注解，并对其生成META-INF的配置信息，rc2在gradle5.0后有坑
+    // As-3.2.1 + gradle4.10.1-all + auto-service:1.0-rc2
+    // implementation 'com.google.auto.service:auto-service:1.0-rc2'
+
+    // APT
+    // As-3.4.1 + gradle5.1.1-all + auto-service:1.0-rc4
+    implementation 'com.google.auto.service:auto-service:1.0-rc7'
+    annotationProcessor'com.google.auto.service:auto-service:1.0-rc7'
+
+    // 通过类调用的形式来生成Java代码（用来生成指定JAVA代码）
+    implementation 'com.squareup:javapoet:1.13.0'
+
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
+}

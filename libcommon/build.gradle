@@ -26,11 +26,38 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    testImplementation 'junit:junit:4.12'
-    compileOnly 'com.google.code.gson:gson:2.8.5'
 
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+
+//    api project(path: ':lib_annation')
+
+    testImplementation 'junit:junit:4.13.1'
+    compileOnly 'com.google.code.gson:gson:2.8.6'
+
+    // 通过类调用的形式来生成Java代码（用来生成指定JAVA代码）
+    implementation 'com.squareup:javapoet:1.13.0'
+
+    implementation 'com.google.auto.service:auto-service:1.0-rc7'
+    annotationProcessor 'com.google.auto.service:auto-service:1.0-rc7'
+
+    annotationProcessor project(path: ':lib_annation')
+
+    compileOnly 'androidx.multidex:multidex:2.0.0'
+    //协程
+    compileOnly 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.4'
+    // alternatively, just ViewModel
+    compileOnly "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    compileOnly "androidx.core:core-ktx:+"
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    compileOnly('com.squareup.okhttp3:okhttp:4.9.0')
+
+}
+
+// java控制台输出中文乱码
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
 }
 
 

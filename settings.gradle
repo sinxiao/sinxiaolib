@@ -1,4 +1,4 @@
-
+include ':lib_annation'
 include ':libcommon'
 include ':app'
 rootProject.name = "sinxiaolib"
