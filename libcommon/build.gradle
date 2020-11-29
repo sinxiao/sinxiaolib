@@ -11,7 +11,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -51,7 +51,8 @@ dependencies {
     compileOnly "androidx.core:core-ktx:+"
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    compileOnly('com.squareup.okhttp3:okhttp:4.9.0')
+    compileOnly('com.squareup.okhttp3:okhttp:4.8.0')
+//    compileOnly('com.squareup.okhttp3:okhttp:4.9.0')
 
 }
 
