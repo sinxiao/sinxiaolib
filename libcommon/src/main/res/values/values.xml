@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="weeks">
+        <item>UNKNOWN</item>
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+    </array>
+    <item name="base_single_fragment_activity_container" type="id" />
+    <string name="sinxiao_net_error">网络有误，请稍后重试</string>
+    <string name="sinxiao_confirm">确定</string>
+    <string name="sinxiao_cancel">取消</string>
+    <string name="sinxiao_infor">信息</string>
+</resources>
