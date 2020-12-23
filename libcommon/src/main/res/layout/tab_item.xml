@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tab_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/igvRes"
+            android:layout_width="@dimen/_dp_36"
+            android:layout_height="@dimen/_dp_36"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_dp_12"
+            android:text="@string/sinxiao_cancel" />
+    </LinearLayout>
+</layout>

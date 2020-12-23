@@ -20,6 +20,7 @@
     <color name="gray_d">#FFDDDDDD</color>
     <color name="gray_e">#FFEEEEEE</color>
     <color name="red">#FFFF0000</color>
+    <color name="common_background">#f9f9f9</color>
     <color name="theme_color">#FF008888</color>
     <color name="theme_color_light">#88008888</color>
     <color name="transparent">#00000000</color>

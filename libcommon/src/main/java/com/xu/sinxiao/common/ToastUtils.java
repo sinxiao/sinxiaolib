@@ -5,10 +5,6 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.widget.Toast;
 
-import com.google.gson.internal.$Gson$Preconditions;
-
-import org.checkerframework.checker.guieffect.qual.UI;
-
 /**
  * Toast 工具类
  */

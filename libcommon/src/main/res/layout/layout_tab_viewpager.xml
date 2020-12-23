@@ -1,0 +1,26 @@
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.xu.sinxiao.common.view.ScrollAbleViewPager
+            android:id="@+id/tab_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <View
+            android:id="@+id/tab_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_e" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabBase"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</layout>

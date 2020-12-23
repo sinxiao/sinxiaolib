@@ -2,11 +2,11 @@ package com.xu.sinxiao.http;
 
 import android.util.Log;
 
-import com.google.common.net.MediaType;
+import com.xu.sinxiao.common.BuildConfig;
 import com.xu.sinxiao.common.callback.ResultStrListener;
+import com.xu.sinxiao.common.logger.Logger;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +16,7 @@ import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -31,10 +32,12 @@ import okhttp3.Callback;
 import okhttp3.CookieJar;
 import okhttp3.FormBody;
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import okio.BufferedSink;
 
 public class HttpService {
@@ -43,47 +46,31 @@ public class HttpService {
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     private static final int CONNECTIOPN_TIME_OUT_DFARUT = 5000;
-    private LogInterceptor logInterceptor = null;
 
     private HttpService() {
-        client = new OkHttpClient.Builder().sslSocketFactory(getDefaultSSLSocketFactory()
-                , getDefaultX509TrustManager()).cookieJar(new PersistenceCookieJar())
-                .build();
-        client.socketFactory();
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        // 包含header、body数据
+
+        if (BuildConfig.DEBUG) {
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        } else {
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+        }
+        client = new OkHttpClient.Builder()
+                //http数据log，日志中打印出HTTP请求&响应数据
+                .addInterceptor(loggingInterceptor)
+                .callTimeout(90, TimeUnit.SECONDS)
+                .readTimeout(90,
+                        TimeUnit.SECONDS).writeTimeout(90, TimeUnit.SECONDS)
+                .connectTimeout(130, TimeUnit.SECONDS)
+                .sslSocketFactory(getDefaultSSLSocketFactory(), getDefaultX509TrustManager())
+                .hostnameVerifier(getDefaultHostnameVerifier())
+                .cookieJar(new CookieJarImpl()).build();
+//        client.socketFactory();
     }
 
     public void setClient(OkHttpClient client) {
         this.client = client;
-    }
-
-    public void setShowLog(boolean bl) {
-        if (bl) {
-            if (logInterceptor == null) {
-                logInterceptor = new LogInterceptor();
-            }
-            addIntercepter(logInterceptor);
-        } else {
-            if (logInterceptor != null) {
-                if (client != null) {
-                    client.interceptors().remove(logInterceptor);
-                }
-                logInterceptor = null;
-            }
-        }
-    }
-
-    public void addIntercepter(Interceptor interceptor) {
-
-//        interceptor = new Interceptor() {
-//            @NotNull
-//            @Override
-//            public Response intercept(@NotNull Chain chain) throws IOException {
-//                return null;
-//            }
-//        };
-        if (client != null) {
-            client.interceptors().add(interceptor);
-        }
     }
 
     private static HttpService INSTANCE = new HttpService();
@@ -100,6 +87,7 @@ public class HttpService {
         if (client == null) {
             client = new OkHttpClient();
         }
+        Logger.e("request ::: " + url);
         final Request request = new Request.Builder()
                 .url(url)
                 .get()//默认就是GET请求，可以不写
@@ -108,17 +96,29 @@ public class HttpService {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.d(TAG, "onFailure: ");
+                if (BuildConfig.DEBUG) {
+                    Logger.d(TAG + "onFailure: " + e.getMessage());
+                }
+
                 if (resultStrListener != null) {
                     resultStrListener.onError(1000, e.getMessage());
                 }
+//                try{
+//                    e.printStackTrace();
+//                }catch (Exception e){
+//
+//                }
+
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 //                Log.d(TAG, "onResponse: " + response.body().string());
                 String body = response.body().string();
-                Log.d(TAG, "onResponse: " + body);
+                if (BuildConfig.DEBUG) {
+//                    Logger.d("code ::: " + response.code());
+//                    Logger.d(TAG + " onResponse::  " + body);
+                }
                 if (resultStrListener != null) {
                     resultStrListener.onRevData(body);
                 }
@@ -130,7 +130,7 @@ public class HttpService {
         if (client == null) {
             client = new OkHttpClient();
         }
-        RequestBody body = RequestBody.create(json, okhttp3.MediaType.parse("application/json; charset=utf-8"));
+        RequestBody body = RequestBody.create(json, MediaType.parse("application/json; charset=utf-8"));
         final Request request = new Request.Builder().url(url).post(body).build();
         Call call = client.newCall(request);
         call.enqueue(new Callback() {
@@ -176,7 +176,7 @@ public class HttpService {
     }
 
     public void asyncDeleteRequest(String url, String json, final ResultStrListener resultStrListener) {
-        RequestBody body = RequestBody.create(json, okhttp3.MediaType.parse("application/json; charset=utf-8"));
+        RequestBody body = RequestBody.create(json, MediaType.parse("application/json; charset=utf-8"));
         final Request request = new Request.Builder().url(url).delete(body).build();
         Call call = client.newCall(request);
         call.enqueue(new Callback() {
@@ -199,7 +199,7 @@ public class HttpService {
     }
 
     public void asyncPutRequest(String url, String json, final ResultStrListener resultStrListener) {
-        RequestBody body = RequestBody.create(json, okhttp3.MediaType.parse("application/json; charset=utf-8"));
+        RequestBody body = RequestBody.create(json, MediaType.parse("application/json; charset=utf-8"));
         final Request request = new Request.Builder().url(url).put(body).build();
         Call call = client.newCall(request);
         call.enqueue(new Callback() {

@@ -39,12 +39,12 @@ dependencies {
     compileOnly 'com.google.code.gson:gson:2.8.6'
 
     // 通过类调用的形式来生成Java代码（用来生成指定JAVA代码）
-    implementation 'com.squareup:javapoet:1.13.0'
-
-    implementation 'com.google.auto.service:auto-service:1.0-rc7'
-    annotationProcessor 'com.google.auto.service:auto-service:1.0-rc7'
-
-    annotationProcessor project(path: ':lib_annation')
+//    implementation 'com.squareup:javapoet:1.13.0'
+//
+//    implementation 'com.google.auto.service:auto-service:1.0-rc7'
+//    annotationProcessor 'com.google.auto.service:auto-service:1.0-rc7'
+//
+//    annotationProcessor project(path: ':lib_annation')
 
     compileOnly 'androidx.appcompat:appcompat:1.0.0'
     compileOnly 'com.google.android.material:material:1.0.0'

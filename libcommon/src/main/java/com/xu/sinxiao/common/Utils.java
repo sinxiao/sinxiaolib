@@ -4,13 +4,17 @@ package com.xu.sinxiao.common;
  * https://jitpack.io/docs/ANDROID/
  */
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Base64;
-import android.util.Log;
+import android.util.TypedValue;
+import android.view.View;
 
 import com.google.gson.Gson;
+import com.xu.sinxiao.common.logger.Logger;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Utils {
@@ -23,12 +27,23 @@ public class Utils {
                     "1000", "1001", "1010", "1011",
                     "1100", "1101", "1110", "1111"};
 
+    /**
+     * 在debug模式下才出现的log信息
+     *
+     * @param info
+     */
     public static void showLog(String info) {
-        Log.d("Utils", " ===== " + info);
+        if (BuildConfig.DEBUG) {
+//            Log.d("Utils", " ===== " + info);
+            Logger.d(" from Utils info >>> " + info);
+        }
     }
 
     public static void showError(String error) {
-        Log.e("Utils", " ===== " + error);
+        if (BuildConfig.DEBUG) {
+//            Log.d("Utils", " ===== " + info);
+            Logger.e(" from Utils info >>> " + error);
+        }
     }
 
     public static void saveStringToSpf(Context context, String key, String value) {
@@ -36,6 +51,14 @@ public class Utils {
         Objects.requireNonNull(key, "key is null");
         Objects.requireNonNull(value, "value is null");
         context.getSharedPreferences("data", 0).edit().putString(key, value).commit();
+    }
+
+    public static String getStringValue(String key) {
+        return getStringFromSpf(Configer.getInstance().getContext(), key);
+    }
+
+    public static void putStringValue(String key, String value) {
+        saveStringToSpf(Configer.getInstance().getContext(), key, value);
     }
 
     public static String getStringFromSpf(Context context, String key) {
@@ -116,6 +139,7 @@ public class Utils {
     }
 
     public static String encryptAESLocal(String value) {
+        Utils.showError(" ALICE is >>> " + ALICE + "AES");
         return CryptUtils.encryptNow(value, ALICE + "AES");
     }
 
@@ -125,7 +149,7 @@ public class Utils {
 
     public static String encryptAES(String data, String password) {
         try {
-            return Base64.encodeToString(AESUtil.encryptByte2Byte(data.getBytes(), password), Base64.DEFAULT);
+            return MyBase64.getEncoder().encodeToString(AESUtil.encryptByte2Byte(data.getBytes(), password));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -134,7 +158,8 @@ public class Utils {
 
     public static String dencryptAES(String value, String password) {
         try {
-            return new String(AESUtil.decryptByte2Byte(Base64.decode(value, Base64.DEFAULT), password));
+            Logger.e("dencryptAES value >> " + value);
+            return new String(AESUtil.decryptByte2Byte(MyBase64.getDecoder().decode(value), password));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -162,6 +187,64 @@ public class Utils {
         return gson.fromJson(json, t);
     }
 
+    public static int getScreenWidth() {
+        return Configer.getInstance().getContext().getResources().getDisplayMetrics().widthPixels;
+    }
 
+    public static int getScreenHeight() {
+        return Configer.getInstance().getContext().getResources().getDisplayMetrics().heightPixels;
+    }
+
+    public static boolean isEmptyList(List list) {
+        if (list != null && list.size() > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public static boolean isEmptyArray(Object[] list) {
+        if (list != null && list.length > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    //dp转px
+    public static int dp2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+    //px转dp
+    public static int px2dp(Context context, int pxValue) {
+        return ((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, pxValue, context.getResources().getDisplayMetrics()));
+    }
+
+    public static void copy(Context context, String info) {
+        Objects.requireNonNull(context, "context can not be null");
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        // 创建一个剪贴数据集，包含一个普通文本数据条目（需要复制的数据）
+        ClipData clipData = ClipData.newPlainText(null, info);
+        // 把数据集设置（复制）到剪贴板
+        clipboard.setPrimaryClip(clipData);
+    }
+
+    public static void bindCopyEvent(Context context, View view, String value) {
+        Objects.requireNonNull(context, "context can not be null");
+        Objects.requireNonNull(view, "view can not be null");
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                // 创建一个剪贴数据集，包含一个普通文本数据条目（需要复制的数据）
+                ClipData clipData = ClipData.newPlainText(null, value);
+                // 把数据集设置（复制）到剪贴板
+                clipboard.setPrimaryClip(clipData);
+                ToastUtils.show(context, context.getString(R.string.copyok));
+            }
+        });
+    }
 
 }

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/common_background"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rl_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/rl_back"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/_dp_10"
+                android:paddingBottom="@dimen/_dp_10">
+
+                <TextView
+                    android:id="@+id/txtBack"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/black_return"
+                    android:clickable="false"
+                    android:textSize="18dp" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="0dp"
+                android:gravity="center"
+                android:text="创建钱包"
+                android:textColor="@color/black_80"
+                android:textSize="18dp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/rl_header"
+            android:orientation="vertical"
+            android:padding="@dimen/_dp_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_dp_10"
+                android:text="钱包名称" />
+
+            <EditText
+                android:id="@+id/edtName"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/edit_name_bg_gray"
+                android:digits="1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXZY@."
+                android:hint="请输入钱包名称"
+                android:inputType="text"
+                android:paddingLeft="8dp"
+                android:paddingTop="10dp"
+                android:singleLine="true"
+                android:textColorHint="#CDCDCD"
+                android:textCursorDrawable="@null"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:id="@+id/layoutPwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_dp_10"
+                    android:text="安全密码" />
+
+                <!--            <EditText-->
+                <!--                android:id="@+id/edtPwd"-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:inputType="textPassword" />-->
+                <EditText
+                    android:id="@+id/edtPwd"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/edit_name_bg_gray"
+                    android:hint="请输入新交易密码"
+                    android:inputType="textPassword"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="12dp"
+                    android:singleLine="true"
+                    android:textColorHint="#CDCDCD"
+                    android:textCursorDrawable="@null"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/layoutPwd2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_dp_10"
+                    android:text="请再次确认安全密码" />
+
+                <!--            <EditText-->
+                <!--                android:id="@+id/edtPwd2"-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:inputType="textPassword" />-->
+                <EditText
+                    android:id="@+id/edtPwd2"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/edit_name_bg_gray"
+                    android:hint="请再次确认安全密码"
+                    android:inputType="textPassword"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="12dp"
+                    android:singleLine="true"
+                    android:textColorHint="#CDCDCD"
+                    android:textCursorDrawable="@null"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btnEnter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_dp_20"
+                android:background="@drawable/shape_rect_7f01ea"
+                android:text="确定"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

@@ -19,7 +19,7 @@ public class LogInterceptor implements Interceptor {
     public Response intercept(@NotNull Chain chain) throws IOException {
         Request request = chain.request();
         long startTime = System.currentTimeMillis();
-        okhttp3.Response response = chain.proceed(chain.request());
+        Response response = chain.proceed(chain.request());
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
         okhttp3.MediaType mediaType = response.body().contentType();

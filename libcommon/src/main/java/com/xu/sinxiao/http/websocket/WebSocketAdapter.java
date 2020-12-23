@@ -66,31 +66,39 @@ public class WebSocketAdapter implements IWebSocketHandle {
      */
     @Override
     public void send(String data) {
-        for (WebSocketHolder webSocketHolder : webSocketHolders) {
-            if (!TextUtils.isEmpty(webSocketHolder.send(data))) {
+        if (webSocketHolders != null) {
+            for (WebSocketHolder webSocketHolder : webSocketHolders) {
+                if (!TextUtils.isEmpty(webSocketHolder.send(data))) {
 //                break;
+                }
             }
         }
+
     }
 
-//    @Override
+    //    @Override
 //    public <T> void send(String data, WebSocketResultListener<T> dataListener) {
     public void send(String data, ResultStrListener dataListener) {
-        for (WebSocketHolder webSocketHolder : webSocketHolders) {
-            String uuid = webSocketHolder.send(data);
+        if (webSocketHolders != null) {
+            for (WebSocketHolder webSocketHolder : webSocketHolders) {
+                String uuid = webSocketHolder.send(data);
 //            Logger.e("uuid is >>> " + uuid);
-            if (!TextUtils.isEmpty(uuid)) {
-                RequestTask requestTask = new RequestTask(uuid, dataListener);
-                requestTaskConcurrentHashMap.put(uuid, requestTask);
-                break;
+                if (!TextUtils.isEmpty(uuid)) {
+                    RequestTask requestTask = new RequestTask(uuid, dataListener);
+                    requestTaskConcurrentHashMap.put(uuid, requestTask);
+                    break;
+                }
             }
         }
+
     }
 
     @Override
     public void close() {
-        for (WebSocketHolder webSocketHolder : webSocketHolders) {
-            webSocketHolder.close();
+        if (webSocketHolders != null) {
+            for (WebSocketHolder webSocketHolder : webSocketHolders) {
+                webSocketHolder.close();
+            }
         }
     }
 }

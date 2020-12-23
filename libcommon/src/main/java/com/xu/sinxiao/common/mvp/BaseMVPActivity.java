@@ -1,23 +1,20 @@
 package com.xu.sinxiao.common.mvp;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import com.xu.sinxiao.common.DialigUtils;
 import com.xu.sinxiao.common.R;
+import com.xu.sinxiao.common.ToastUtils;
 import com.xu.sinxiao.common.databinding.RootFramelayoutBinding;
 
-public abstract class BaseMVPActivity extends AppCompatActivity implements IView {
+public abstract class BaseMVPActivity extends BaseActivity implements IView {
     protected IPresent present;
 
     public abstract IPresent createPresent();
@@ -62,24 +59,17 @@ public abstract class BaseMVPActivity extends AppCompatActivity implements IView
 
     @Override
     public void showToast(String info) {
-        Toast toast = Toast.makeText(this, info, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
+        ToastUtils.show(this, info);
     }
 
     @Override
     public void showDialog(String info) {
-        new AlertDialog.Builder(this).setTitle("Info").setMessage(info).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        }).create().show();
+        DialigUtils.showInforDialog(this, info);
     }
 
     @Override
     public void showError(String error) {
-        showToast(error);
+        DialigUtils.showErrorDialog(this, error);
     }
 
     @Override
@@ -95,9 +85,21 @@ public abstract class BaseMVPActivity extends AppCompatActivity implements IView
     }
 
     @Override
-    public void launchActivity(@NonNull Intent intent) {
+    protected void onDestroy() {
+        super.onDestroy();
+        present.destory();
+    }
+
+    @Override
+    public void launch(@NonNull Intent intent) {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    public void showErrorView(String info) {
+        rootFragmentBinding.txtTip.setText(info);
+        rootFragmentBinding.layoutError.setVisibility(View.VISIBLE);
+        rootFragmentBinding.contentLayout.setVisibility(View.INVISIBLE);
     }
 
     @Override

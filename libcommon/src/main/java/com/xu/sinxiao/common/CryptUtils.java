@@ -126,6 +126,7 @@ public class CryptUtils {
 
     private static void genTheAESKey(String alice) {
 
+        Utils.showError("alice rsa >>>  " + Utils.ALICE + "RSA");
         if (TextUtils.isEmpty(aesKey)) {
             String encypt = Utils.getStringFromSpf(Configer.getInstance().getContext(), alice);
 //            Utils.showError("encypt is  >>> " + encypt);

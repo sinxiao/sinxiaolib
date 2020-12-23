@@ -15,4 +15,7 @@
     <string name="sinxiao_confirm">确定</string>
     <string name="sinxiao_cancel">取消</string>
     <string name="sinxiao_infor">信息</string>
+    <string name="no_data">没有记录</string>
+    <string name="copyok">复制成功</string>
+
 </resources>

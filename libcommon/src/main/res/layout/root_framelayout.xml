@@ -11,12 +11,13 @@
             android:id="@+id/loadingLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/black_20"
             android:gravity="center"
             android:visibility="gone">
 
-            <com.xu.sinxiao.common.view.LoadingIndicatorView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            <com.wang.avi.AVLoadingIndicatorView
+                android:layout_width="@dimen/_dp_100"
+                android:layout_height="@dimen/_dp_100" />
         </RelativeLayout>
 
         <LinearLayout
@@ -67,8 +68,8 @@
                 android:layout_weight="1" />
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_80"
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
                 android:clickable="false"
                 android:src="@drawable/net_error" />
 
@@ -79,7 +80,7 @@
                 android:layout_marginTop="@dimen/_dp_10"
                 android:clickable="false"
                 android:gravity="center"
-                android:text="@string/net_error" />
+                android:text="@string/sinxiao_net_error" />
 
             <View
                 android:layout_width="1px"

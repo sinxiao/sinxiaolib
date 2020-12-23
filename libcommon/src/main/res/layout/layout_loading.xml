@@ -2,13 +2,16 @@
 <layout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/loadingLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/black_20"
         android:gravity="center">
 
-        <com.xu.sinxiao.common.view.LoadingIndicatorView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_width="@dimen/_dp_120"
+            android:layout_height="@dimen/_dp_120" />
     </RelativeLayout>
 </layout>
