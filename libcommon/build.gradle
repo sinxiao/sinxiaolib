@@ -26,6 +26,10 @@ android {
     dataBinding {
         enabled true
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -33,10 +37,12 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
 
+
+    compileOnly 'com.google.android.material:material:1.2.1'
 //    api project(path: ':lib_annation')
 
     testImplementation 'junit:junit:4.13.1'
-    compileOnly 'com.google.code.gson:gson:2.8.6'
+
 
     // 通过类调用的形式来生成Java代码（用来生成指定JAVA代码）
 //    implementation 'com.squareup:javapoet:1.13.0'
@@ -45,9 +51,14 @@ dependencies {
 //    annotationProcessor 'com.google.auto.service:auto-service:1.0-rc7'
 //
 //    annotationProcessor project(path: ':lib_annation')
+    api 'org.apache.commons:commons-lang3:3.9'
+    api 'org.apache.commons:commons-collections4:4.3'
+    api 'com.fasterxml.jackson.core:jackson-databind:2.12.0'
+    api 'com.fasterxml.jackson.core:jackson-core:2.12.0'
+    api 'com.fasterxml.jackson.core:jackson-annotations:2.12.0'
 
+    compileOnly 'com.google.code.gson:gson:2.8.6'
     compileOnly 'androidx.appcompat:appcompat:1.0.0'
-    compileOnly 'com.google.android.material:material:1.0.0'
     compileOnly 'androidx.recyclerview:recyclerview:1.0.0'
     compileOnly 'androidx.constraintlayout:constraintlayout:1.1.3'
 
@@ -59,9 +70,14 @@ dependencies {
     compileOnly "androidx.core:core-ktx:+"
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    compileOnly('com.squareup.okhttp3:okhttp:4.8.0')
-//    compileOnly('com.squareup.okhttp3:okhttp:4.9.0')
 
+    compileOnly('com.squareup.okhttp3:okhttp:4.8.0')
+    compileOnly 'com.squareup.okhttp3:logging-interceptor:4.10.0-RC1'
+    implementation('com.wang.avi:library:2.1.3')
+    def room_version = "2.2.5"
+
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    compileOnly "androidx.room:room-runtime:$room_version"
 }
 
 // java控制台输出中文乱码
