@@ -51,11 +51,11 @@ dependencies {
 //    annotationProcessor 'com.google.auto.service:auto-service:1.0-rc7'
 //
 //    annotationProcessor project(path: ':lib_annation')
-    api 'org.apache.commons:commons-lang3:3.9'
-    api 'org.apache.commons:commons-collections4:4.3'
-    api 'com.fasterxml.jackson.core:jackson-databind:2.12.0'
-    api 'com.fasterxml.jackson.core:jackson-core:2.12.0'
-    api 'com.fasterxml.jackson.core:jackson-annotations:2.12.0'
+    compileOnly 'org.apache.commons:commons-lang3:3.9'
+    compileOnly 'org.apache.commons:commons-collections4:4.3'
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind:2.12.0'
+    compileOnly 'com.fasterxml.jackson.core:jackson-core:2.12.0'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations:2.12.0'
 
     compileOnly 'com.google.code.gson:gson:2.8.6'
     compileOnly 'androidx.appcompat:appcompat:1.0.0'

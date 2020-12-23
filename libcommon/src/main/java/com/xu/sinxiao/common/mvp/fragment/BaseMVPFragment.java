@@ -195,7 +195,11 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
         try {
             Class c = Class.forName(name);
             try {
-                return (BaseFragment) c.newInstance();
+                try {
+                    return (BaseFragment) c.newInstance();
+                } catch (java.lang.InstantiationException e) {
+                    e.printStackTrace();
+                }
             } catch (InstantiationException e) {
 //                e.printStackTrace();
                 Logger.e("" + e.getMessage());
