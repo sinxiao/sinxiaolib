@@ -116,4 +116,22 @@ public class DBBiz<T extends BaseDBModel> {
         save(t);
     }
 
+    public void delById(String id, String type) {
+        List<Param> params = DataBaseService.getInstance().getAppDB().paramsDao().loadParamsByKeyAndType(id, type);
+        if (params != null && params.size() > 0) {
+            for (Param param : params) {
+                DataBaseService.getInstance().getAppDB().paramsDao().deleteParam(param);
+            }
+        }
+    }
+
+    public <T> List<T> queryByTypeLikeV(String type, String v, Class<T> clazz) {
+        List<Param> params = DataBaseService.getInstance().getAppDB().paramsDao().loadParamsByTypeLikeV(type, v);
+        List<T> ts = new ArrayList<>();
+        for (Param param : params) {
+            T t = GsonUtils.parserBean(param.getValue(), clazz);
+            ts.add(t);
+        }
+        return ts;
+    }
 }

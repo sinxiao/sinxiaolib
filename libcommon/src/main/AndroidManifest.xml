@@ -3,5 +3,6 @@
 
     <application>
         <activity android:name=".fragment.DefaultFragmentActivity" />
+        <activity android:name=".activity.WebViewActivity" />
     </application>
 </manifest>

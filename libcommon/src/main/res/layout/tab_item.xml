@@ -3,15 +3,16 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/tab_item"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
         android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/igvRes"
-            android:layout_width="@dimen/_dp_36"
-            android:layout_height="@dimen/_dp_36"
+            android:layout_width="@dimen/_dp_30"
+            android:layout_height="@dimen/_dp_30"
             android:scaleType="fitCenter" />
 
         <TextView
@@ -19,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_dp_12"
-            android:text="@string/sinxiao_cancel" />
+            android:text="@string/sinxiao_cancel"
+            android:textSize="@dimen/dp_8" />
     </LinearLayout>
 </layout>

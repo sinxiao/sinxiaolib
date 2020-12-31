@@ -2,6 +2,8 @@ package com.xu.sinxiao.common;
 
 import android.content.Context;
 
+import com.xu.sinxiao.common.db.DataBaseService;
+
 import java.util.Objects;
 
 public class Configer {
@@ -33,5 +35,6 @@ public class Configer {
         this.context = context;
         packageName = context.getPackageName();
         RSAEncryptUtil.getInstance().init(context, null);
+        DataBaseService.getInstance().init(context);
     }
 }

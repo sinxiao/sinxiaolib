@@ -22,6 +22,9 @@ public interface ParamsDao {
     @Query("SELECT * FROM Params WHERE key_=:key and type = :type")
     List<Param> loadParamsByKeyAndType(String key, String type);
 
+    @Query("SELECT * FROM Params WHERE type = :type and value like '%' || :v || '%' ")
+    List<Param> loadParamsByTypeLikeV(String type, String v);
+
     @Insert
     void insert(Param param);
 
@@ -33,5 +36,7 @@ public interface ParamsDao {
 
     @Delete
     void deleteParam(Param param);
+
+
 
 }

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,6 +58,9 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
         });
     }
 
+    public <T extends ViewDataBinding> T getViewDataBind(int resLayout) {
+        return DataBindingUtil.inflate(LayoutInflater.from(getContext()), resLayout, null, false);
+    }
 
     @Nullable
     @Override
@@ -195,12 +199,8 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
         try {
             Class c = Class.forName(name);
             try {
-                try {
-                    return (BaseFragment) c.newInstance();
-                } catch (java.lang.InstantiationException e) {
-                    e.printStackTrace();
-                }
-            } catch (InstantiationException e) {
+                return (BaseFragment) c.newInstance();
+            } catch (java.lang.InstantiationException e) {
 //                e.printStackTrace();
                 Logger.e("" + e.getMessage());
             }

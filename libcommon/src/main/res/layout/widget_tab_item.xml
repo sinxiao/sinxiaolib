@@ -16,10 +16,10 @@
 
             <com.xu.sinxiao.common.view.FreeTintImageView
                 android:id="@+id/tab_item_icon"
-                android:layout_width="@dimen/_dp_30"
-                android:layout_height="@dimen/_dp_30"
+                android:layout_width="@dimen/_dp_25"
+                android:layout_height="@dimen/_dp_25"
                 android:layout_centerInParent="true"
-                android:scaleType="fitXY" />
+                android:scaleType="fitCenter" />
 
             <TextView
                 android:id="@+id/tab_item_new_flag"
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/black"
-            android:textSize="@dimen/tab_item_text_size" />
+            android:textSize="@dimen/sp_12" />
     </LinearLayout>
 </layout>
 
