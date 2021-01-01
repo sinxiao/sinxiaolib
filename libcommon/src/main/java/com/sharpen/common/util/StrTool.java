@@ -1,12 +1,6 @@
 package com.sharpen.common.util;
 
 import android.util.Log;
-
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.crypto.asymmetric.KeyType;
-import cn.hutool.crypto.asymmetric.RSA;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -14,16 +8,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharpen.common.consts.SignConst;
 import com.sharpen.common.consts.SymbolConst;
+import com.xu.sinxiao.common.Utils;
 
-import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
-import org.slf4j.MDC;
 
 import java.io.File;
 import java.io.StringWriter;
@@ -179,7 +169,7 @@ public class StrTool {
    * @return
    */
   public static String fnt() {
-    return DateUtil.format(new Date(), DatePattern.PURE_DATETIME_FORMAT);
+    return DateUtil.format(new Date());
   }
 
   /**
@@ -319,12 +309,12 @@ public class StrTool {
     return str;
   }
 
-  public static StringWriter ve2sw(VelocityEngine ve, String vePath, VelocityContext context) {
-    StringWriter writer = new StringWriter();
-    Template template = ve.getTemplate(vePath);
-    template.merge(context, writer);
-    return writer;
-  }
+//  public static StringWriter ve2sw(VelocityEngine ve, String vePath, VelocityContext context) {
+//    StringWriter writer = new StringWriter();
+//    Template template = ve.getTemplate(vePath);
+//    template.merge(context, writer);
+//    return writer;
+//  }
 
   // static VelocityEngine veDefault = new VelocityEngine();
 
@@ -332,18 +322,18 @@ public class StrTool {
    * 获取默认VelocityEngine对象
    * ResourceLoader参考: https://www.iteye.com/blog/zhouzba-2093650
    */
-  public static VelocityEngine defaultVe() {
-    return defaultVe(null);
-  }
-
-  public static VelocityEngine veAbsolutePath() {
-    Properties prop = new Properties();
-    prop.put("resource.loader", "file");
-    prop.setProperty(VelocityEngine.FILE_RESOURCE_LOADER_PATH, "");
-    prop.put("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.FileResourceLoader");
-    VelocityEngine ve = StrTool.defaultVe(prop);
-    return ve;
-  }
+//  public static VelocityEngine defaultVe() {
+//    return defaultVe(null);
+//  }
+//
+//  public static VelocityEngine veAbsolutePath() {
+//    Properties prop = new Properties();
+//    prop.put("resource.loader", "file");
+//    prop.setProperty(VelocityEngine.FILE_RESOURCE_LOADER_PATH, "");
+//    prop.put("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.FileResourceLoader");
+//    VelocityEngine ve = StrTool.defaultVe(prop);
+//    return ve;
+//  }
 
   // static VelocityEngine veDefault = new VelocityEngine();
 
@@ -351,53 +341,53 @@ public class StrTool {
    * 获取默认VelocityEngine对象
    * ResourceLoader参考: https://www.iteye.com/blog/zhouzba-2093650
    */
-  public static VelocityEngine defaultVe(Properties prop) {
-    VelocityEngine veDefault = new VelocityEngine();
-    veDefault.setProperty("input.encoding", StandardCharsets.UTF_8.name());
-    Properties p = new Properties();
-    p.put("file.resource.loader.class",
-        "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-    p.put("directive.foreach.counter.name", "velocityCount");
-    p.put("directive.foreach.counter.initial.value", 1);
-    p.put("input.encoding", StandardCharsets.UTF_8.name());
-    p.put("output.encoding", StandardCharsets.UTF_8.name());
-    if (MapUtils.isNotEmpty(prop)) {
-      p.putAll(prop);
-    }
+//  public static VelocityEngine defaultVe(Properties prop) {
+//    VelocityEngine veDefault = new VelocityEngine();
+//    veDefault.setProperty("input.encoding", StandardCharsets.UTF_8.name());
+//    Properties p = new Properties();
+//    p.put("file.resource.loader.class",
+//        "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+//    p.put("directive.foreach.counter.name", "velocityCount");
+//    p.put("directive.foreach.counter.initial.value", 1);
+//    p.put("input.encoding", StandardCharsets.UTF_8.name());
+//    p.put("output.encoding", StandardCharsets.UTF_8.name());
+//    if (MapUtils.isNotEmpty(prop)) {
+//      p.putAll(prop);
+//    }
+//
+//    veDefault.init(p);
+//    return veDefault;
+//  }
 
-    veDefault.init(p);
-    return veDefault;
-  }
+//  public static String mask(String str) {
+//    return mask(str, 2, 6);
+//  }
 
-  public static String mask(String str) {
-    return mask(str, 2, 6);
-  }
-
-  public static String mask(String str, Integer type, Integer hideLeng) {
-    if (StringUtils.isBlank(str)) {
-      return str;
-    }
-    int start = 0, end = str.length(), leng = str.length();
-    if (leng > hideLeng) {
-      if (type == SignConst.ONE.intValue()) {
-        // 隐藏前面
-        end = hideLeng;
-      } else if (type == SignConst.TWO.intValue()) {
-        // 隐藏中间
-        start = (leng - hideLeng) / 2;
-        end = start + hideLeng;
-      } else if (type == SignConst.THREE.intValue()) {
-        // 隐藏末尾
-        start = leng - hideLeng;
-      } else if (type == SignConst.FOUR.intValue()) {
-        // 隐藏两边
-        start = leng - hideLeng;
-        return StrUtil.hide(StrUtil.hide(str, 0, (leng - hideLeng) / 2), (leng + hideLeng) / 2, end);
-      }
-    }
-    //
-    return StrUtil.hide(str, start, end);
-  }
+//  public static String mask(String str, Integer type, Integer hideLeng) {
+//    if (StringUtils.isBlank(str)) {
+//      return str;
+//    }
+//    int start = 0, end = str.length(), leng = str.length();
+//    if (leng > hideLeng) {
+//      if (type == SignConst.ONE.intValue()) {
+//        // 隐藏前面
+//        end = hideLeng;
+//      } else if (type == SignConst.TWO.intValue()) {
+//        // 隐藏中间
+//        start = (leng - hideLeng) / 2;
+//        end = start + hideLeng;
+//      } else if (type == SignConst.THREE.intValue()) {
+//        // 隐藏末尾
+//        start = leng - hideLeng;
+//      } else if (type == SignConst.FOUR.intValue()) {
+//        // 隐藏两边
+//        start = leng - hideLeng;
+//        return StrUtil.hide(StrUtil.hide(str, 0, (leng - hideLeng) / 2), (leng + hideLeng) / 2, end);
+//      }
+//    }
+//    //
+//    return StrUtil.hide(str, start, end);
+//  }
 
 
   public static AtomicInteger order = new AtomicInteger(9999999);
@@ -827,7 +817,7 @@ public class StrTool {
       mdInst.update(plaintextByte);
       // 获得密文
       byte[] md = mdInst.digest();
-      String ciphertext = Hex.encodeHexString(md);
+      String ciphertext = Utils.bytes2HexString(md);
       return ciphertext;
     } catch (Exception e) {
       Log.d(TAG, e.getMessage(), e);
@@ -869,7 +859,7 @@ public class StrTool {
       return null;
     }
     try {
-      String hexStr = Hex.encodeHexString(str.getBytes(StandardCharsets.UTF_8));
+      String hexStr = Utils.bytes2HexString(str.getBytes(StandardCharsets.UTF_8));
       return hexStr;
     } catch (Exception e) {
       Log.d(TAG, e.getMessage(), e);
@@ -887,7 +877,8 @@ public class StrTool {
       return null;
     }
     try {
-      String str = new String(Hex.decodeHex(hex.toCharArray()), StandardCharsets.UTF_8);
+
+      String str = new String(Utils.hexString2Bytes(hex), StandardCharsets.UTF_8);
       return str;
     } catch (Exception e) {
       Log.d(TAG, e.getMessage(), e);
@@ -1062,16 +1053,16 @@ public class StrTool {
 
   }
 
-  public String rsaDecrypt(String privateKey,String cipherBase64){
-    RSA rsa=new RSA(privateKey,null);
-    byte[] plainBytes=rsa.decryptFromBase64(cipherBase64, KeyType.PrivateKey);
-    return new String(plainBytes);
-  }
-
-  public String rsaEncrypt(String publicKey,byte[] plainBytes){
-    RSA rsa=new RSA(null,publicKey);
-    byte[] plainText=rsa.encrypt(plainBytes, KeyType.PublicKey);
-    return new String(plainText);
-  }
+//  public String rsaDecrypt(String privateKey,String cipherBase64){
+//    RSA rsa=new RSA(privateKey,null);
+//    byte[] plainBytes=rsa.decryptFromBase64(cipherBase64, KeyType.PrivateKey);
+//    return new String(plainBytes);
+//  }
+//
+//  public String rsaEncrypt(String publicKey,byte[] plainBytes){
+//    RSA rsa=new RSA(null,publicKey);
+//    byte[] plainText=rsa.encrypt(plainBytes, KeyType.PublicKey);
+//    return new String(plainText);
+//  }
 
 }

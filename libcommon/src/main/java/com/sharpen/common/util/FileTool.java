@@ -7,12 +7,12 @@ import com.sharpen.common.activity.BaseActivity;
 import com.sharpen.common.consts.SignConst;
 import com.sharpen.common.consts.SymbolConst;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
+//import cn.hutool.core.date.DateUtil;
+//import cn.hutool.core.util.StrUtil;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.URL;
@@ -30,7 +30,7 @@ import static com.sharpen.common.util.BizData.USER_HOME;
 
 
 public class FileTool {
-  private static Logger log = LoggerFactory.getLogger(FileTool.class);
+//  private static Logger log = LoggerFactory.getLogger(FileTool.class);
 
   public static boolean testSwitch = false;
   public static Properties envProp = null;
@@ -78,7 +78,7 @@ public class FileTool {
       propLocal = FileTool.file2prop(propPath);
       return propLocal == null ? new Properties() : propLocal;
     } catch (Exception e) {
-      log.info(e.getMessage(), e);
+      //log.info(e.getMessage(), e);
     }
     return propLocal;
   }
@@ -147,7 +147,7 @@ public class FileTool {
       return fis;
     } catch (FileNotFoundException e) {
     } catch (Exception e) {
-      log.info("filePath" + filePath + e.getMessage(), e);
+      //log.info("filePath" + filePath + e.getMessage(), e);
     }
     return null;
   }
@@ -174,7 +174,7 @@ public class FileTool {
       br = new BufferedReader(isr);
       sysConf.load(br);
     } catch (Exception e) {
-      log.error("file2prop exception,filePath:{}", filePath, e);
+      //log.error("file2prop exception,filePath:{}", filePath, e);
     } finally {
       try {
         if (br != null) {
@@ -185,7 +185,7 @@ public class FileTool {
         }
         fis.close();
       } catch (Exception e) {
-        log.info("filePath" + filePath + e.getMessage(), e);
+        //log.info("filePath" + filePath + e.getMessage(), e);
       }
     }
 
@@ -206,7 +206,7 @@ public class FileTool {
         return true;
       }
     } catch (Exception e) {
-      log.info("filePath" + filePath + e.getMessage(), e);
+      //log.info("filePath" + filePath + e.getMessage(), e);
     }
 
     return false;
@@ -243,12 +243,12 @@ public class FileTool {
           while ((len = bis2.read(buff)) > 0) {
             bos.write(buff, 0, len);
           }
-          log.info(originalName + " save to:" + fullPath);
+          //log.info(originalName + " save to:" + fullPath);
         }
       }
 
     } catch (Exception e) {
-      log.error(e.getMessage(), e);
+      //log.error(e.getMessage(), e);
     } finally {
       try {
 
@@ -268,7 +268,7 @@ public class FileTool {
           bis2.close();
         }
       } catch (Exception e) {
-        log.error(e.getMessage(), e);
+        //log.error(e.getMessage(), e);
       }
     }
     return prop;
@@ -301,7 +301,7 @@ public class FileTool {
       try {
         return file.createNewFile();
       } catch (Exception e) {
-        log.info(e.getMessage(), e);
+        //log.info(e.getMessage(), e);
         return false;
       }
     }
@@ -337,7 +337,7 @@ public class FileTool {
           System.out.println("create dir fail:" + currDirStr);
         }
       } catch (Exception e) {
-        log.info(e.getMessage(), e);
+        //log.info(e.getMessage(), e);
       }
     }
     return true;
@@ -389,7 +389,8 @@ public class FileTool {
       BufferedReader bReader = new BufferedReader (isReader);
       String mimeTypeLine = null ;
       while((mimeTypeLine = bReader.readLine())!=null) {
-        sb.append(mimeTypeLine).append(StrUtil.CRLF);
+//        sb.append(mimeTypeLine).append(StrUtil.CRLF);
+//        sb.append(mimeTypeLine).append(StrUtil.CRLF);
       }
     }catch (Exception e){
       e.printStackTrace();
@@ -415,13 +416,13 @@ public class FileTool {
         sb.append(line).append(System.getProperty("line.separator"));
       }
     } catch (UnsupportedEncodingException e) {
-      log.error("读取文件为一个内存字符串失败，失败原因是使用了不支持的字符编码" + charset, e);
+      //log.error("读取文件为一个内存字符串失败，失败原因是使用了不支持的字符编码" + charset, e);
       return null;
     } catch (FileNotFoundException e) {
-      log.error("读取文件为一个内存字符串失败，失败原因所给的文件" + file + "不存在！", e);
+      //log.error("读取文件为一个内存字符串失败，失败原因所给的文件" + file + "不存在！", e);
       return null;
     } catch (IOException e) {
-      log.error("读取文件为一个内存字符串失败，失败原因是读取文件异常！", e);
+      //log.error("读取文件为一个内存字符串失败，失败原因是读取文件异常！", e);
       return null;
     } finally {
       try {
@@ -429,7 +430,7 @@ public class FileTool {
           reader.close();
         }
       } catch (Exception e) {
-        log.error("关闭文件异常！", e);
+        //log.error("关闭文件异常！", e);
       }
     }
     return sb.toString();
@@ -458,14 +459,14 @@ public class FileTool {
       bos.write(fileByte);
       return true;
     } catch (Exception e) {
-      log.error("read file fail", e);
+      //log.error("read file fail", e);
     } finally {
       try {
         if (bos != null) {
           bos.close();
         }
       } catch (Exception e) {
-        log.error("file close fail", e);
+        //log.error("file close fail", e);
       }
     }
     return false;
@@ -506,11 +507,11 @@ public class FileTool {
       writer = new BufferedWriter(writerStream);
       writer.write(str);
     } catch (UnsupportedEncodingException e) {
-      log.error("读取文件为一个内存字符串失败，失败原因是使用了不支持的字符编码" + charset, e);
+      //log.error("读取文件为一个内存字符串失败，失败原因是使用了不支持的字符编码" + charset, e);
     } catch (FileNotFoundException e) {
-      log.error("读取文件为一个内存字符串失败，失败原因所给的文件" + file + "不存在！", e);
+      //log.error("读取文件为一个内存字符串失败，失败原因所给的文件" + file + "不存在！", e);
     } catch (IOException e) {
-      log.error("读取文件为一个内存字符串失败，失败原因是读取文件异常！", e);
+      //log.error("读取文件为一个内存字符串失败，失败原因是读取文件异常！", e);
     } finally {
       try {
         if (writer != null) {
@@ -523,7 +524,7 @@ public class FileTool {
           out.close();
         }
       } catch (Exception e) {
-        log.error("关闭文件异常！", e);
+        //log.error("关闭文件异常！", e);
       }
     }
   }
@@ -541,7 +542,7 @@ public class FileTool {
     }
     File folder = new File(sourceFolderPath);
     if (folder == null || !folder.exists() || !folder.isDirectory()) {
-      log.info(zipFolder + " unreal");
+      //log.info(zipFolder + " unreal");
       return;
     }
     zipFolder = zipFolder.trim();
@@ -557,9 +558,9 @@ public class FileTool {
         continue;
       }
       String aimFileName = zipFolder + subFolder.getName() + ".zip";
-      log.info(DateUtil.now() + " start zip subFolder=" + subFolder.getAbsolutePath() + " aimFileName=" + aimFileName);
+      //log.info(DateUtil.now() + " start zip subFolder=" + subFolder.getAbsolutePath() + " aimFileName=" + aimFileName);
       createZip(subFolder.getAbsolutePath(), aimFileName);
-      log.info(DateUtil.now() + " end zip subFolder=" + subFolder.getAbsolutePath());
+      //log.info(DateUtil.now() + " end zip subFolder=" + subFolder.getAbsolutePath());
     }
   }
 
@@ -593,7 +594,7 @@ public class FileTool {
           fos.close();
         }
       } catch (IOException e) {
-        log.error("创建ZIP文件失败", e);
+        //log.error("创建ZIP文件失败", e);
       }
 
     }
@@ -624,9 +625,9 @@ public class FileTool {
           zos.flush();
         }
       } catch (FileNotFoundException e) {
-        log.error("创建ZIP文件失败", e);
+        //log.error("创建ZIP文件失败", e);
       } catch (IOException e) {
-        log.error("创建ZIP文件失败", e);
+        //log.error("创建ZIP文件失败", e);
       } finally {
         try {
           if (bis != null) {
@@ -636,7 +637,7 @@ public class FileTool {
             fis.close();
           }
         } catch (IOException e) {
-          log.error("创建ZIP文件失败", e);
+          //log.error("创建ZIP文件失败", e);
         }
       }
     }
