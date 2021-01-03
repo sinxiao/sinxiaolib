@@ -1,6 +1,6 @@
 # sinxiaolib
 
- [![](https://jitpack.io/v/sinxiao/sinxiaolib.svg)](https://jitpack.io/#sinxiao/sinxiaolib)
+# [![](https://jitpack.io/v/sinxiao/sinxiaolib.svg)](https://jitpack.io/#sinxiao/sinxiaolib)
 
 ## To get a Git project into your build:
 
@@ -21,7 +21,7 @@ allprojects {
   
   ```
   dependencies {
-	        implementation 'com.github.sinxiao:sinxiaolib:1.1.0'
+	        implementation 'com.github.sinxiao:sinxiaolib:1.2.0'
 	}
   ```
   
