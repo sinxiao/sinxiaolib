@@ -1,5 +1,6 @@
 package com.xu.sinxiao.common.mvp.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.IpPrefix;
 import android.os.Bundle;
@@ -11,6 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelStore;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,7 +40,6 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
     public String NAME = this.getClass().getName();
     private RootFramelayoutBinding rootFragmentBinding;
     protected T present;
-    protected View view;
 
     public BaseMVPFragment() {
     }
@@ -88,10 +92,76 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
         return rootFragmentBinding.getRoot();
     }
 
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle() {
+        return super.getLifecycle();
+    }
+
+    @NonNull
+    @Override
+    public LiveData<LifecycleOwner> getViewLifecycleOwnerLiveData() {
+        return super.getViewLifecycleOwnerLiveData();
+    }
+
+    @NonNull
+    @Override
+    public ViewModelStore getViewModelStore() {
+        return super.getViewModelStore();
+    }
+
+    @Nullable
+    @Override
+    public Object getSharedElementReturnTransition() {
+        return super.getSharedElementReturnTransition();
+    }
+
+    @Nullable
+    @Override
+    public Object getSharedElementEnterTransition() {
+        return super.getSharedElementEnterTransition();
+    }
+
+    @Nullable
+    @Override
+    public Object getReturnTransition() {
+        return super.getReturnTransition();
+    }
+
+    @Nullable
+    @Override
+    public Object getReenterTransition() {
+        return super.getReenterTransition();
+    }
+
+    @Nullable
+    @Override
+    public Object getExitTransition() {
+        return super.getExitTransition();
+    }
+
+    @Nullable
+    @Override
+    public Object getEnterTransition() {
+        return super.getEnterTransition();
+    }
+
+    @Nullable
+    @Override
+    public Context getContext() {
+        return super.getContext();
+    }
+
+    @NonNull
+    @Override
+    public LifecycleOwner getViewLifecycleOwner() {
+        return super.getViewLifecycleOwner();
+    }
+
     @Nullable
     @Override
     public View getView() {
-        return view;
+        return super.getView();
     }
 
     @Override
