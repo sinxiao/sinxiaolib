@@ -35,6 +35,7 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
     public String NAME = this.getClass().getName();
     private RootFramelayoutBinding rootFragmentBinding;
     protected T present;
+    protected View view;
 
     public BaseMVPFragment() {
     }
@@ -87,6 +88,12 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
         return rootFragmentBinding.getRoot();
     }
 
+    @Nullable
+    @Override
+    public View getView() {
+        return view;
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -100,7 +107,6 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
             } else {
                 present.dispatchEvent(MvpEvent.init(NAME, MvpEvent.TYPE_INIT));
             }
-
         }
         if (present != null) {
             present.fetchData();
@@ -141,17 +147,16 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
     public void showLoading() {
         UIExecutor.postRunable(() -> {
             rootFragmentBinding.loadingLayout.setVisibility(View.VISIBLE);
-            rootFragmentBinding.contentLayout.setVisibility(View.GONE);
+//            rootFragmentBinding.contentLayout.setVisibility(View.GONE);
         });
     }
 
     @Override
     public void dissLoading() {
         UIExecutor.postRunable(() -> {
-            rootFragmentBinding.contentLayout.setVisibility(View.VISIBLE);
+//            rootFragmentBinding.contentLayout.setVisibility(View.VISIBLE);
             rootFragmentBinding.loadingLayout.setVisibility(View.GONE);
         });
-
     }
 
     @Override
