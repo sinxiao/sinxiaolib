@@ -83,7 +83,12 @@ public abstract class BaseHolder<T extends BaseHolderData> extends RecyclerView.
         return null != this.getBindData() && this.getBindData().mItemClickListener != null ? new View.OnClickListener() {
             public void onClick(View v) {
                 if (BaseHolder.this.getBindData().mItemClickListener != null) {
-                    BaseHolder.this.getBindData().mItemClickListener.onClick(v, BaseHolder.this.getBindData(), BaseHolder.this.getBindPosition());
+                    try {
+                        Object object = BaseHolder.this.getBindData();
+                        BaseHolder.this.getBindData().mItemClickListener.onClick(v, object, BaseHolder.this.getBindPosition());
+                    }catch (Exception e){
+//                         e.printStackTrace();
+                    }
                 }
 
             }

@@ -1,9 +1,10 @@
 package com.sharpen.common.util;
 
-//import cn.hutool.extra.mail.MailAccount;
 import com.sharpen.common.consts.SymbolConst;
 
 import java.util.Map;
+
+import cn.hutool.extra.mail.MailAccount;
 
 /**
  * 业务数据
@@ -28,7 +29,7 @@ public class BizData {
   public static String CENTER_ISSUER = "marketRobot";
 
 
-//  public static MailAccount defautlMailAccount = new MailAccount();
+  public static MailAccount defautlMailAccount = new MailAccount();
 
   public enum OSType {
     OS_TYPE_LINUX, OS_TYPE_WIN, OS_TYPE_SOLARIS, OS_TYPE_MAC, OS_TYPE_FREEBSD, OS_TYPE_OTHER

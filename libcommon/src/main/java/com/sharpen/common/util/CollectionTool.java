@@ -5,22 +5,31 @@ import com.sharpen.common.consts.SymbolConst;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class CollectionTool {
 
-//    private static Logger log = LoggerFactory.getLogger(CollectionTool.class);
+    private static Logger log = LoggerFactory.getLogger(CollectionTool.class);
 
     public static <T> T multiMapGet(int modelInt, List<ConcurrentMap<String, T>> list, String key) {
         if (list == null) {
-//            log.info("multiMapGet list must init, for sync");
+            log.info("multiMapGet list must init, for sync");
             return null;
         }
 
@@ -37,7 +46,7 @@ public class CollectionTool {
     public static <T> T multiMapRemove(int modelInt, List<ConcurrentMap<String, T>> list,
                                        String key) {
         if (list == null) {
-//            log.info("multiMapGet list must init, for sync");
+            log.info("multiMapGet list must init, for sync");
             return null;
         }
 
@@ -55,7 +64,7 @@ public class CollectionTool {
     public static <T> T multiMapPut(int modelInt, List<ConcurrentMap<String, T>> list, String key,
                                     T val) {
         if (list == null) {
-//            log.info("multiMapGet list must init, for sync");
+            log.info("multiMapGet list must init, for sync");
             return null;
         }
 
@@ -74,7 +83,7 @@ public class CollectionTool {
             map.put(key, val);
             return val;
         } catch (Exception e) {
-//            log.info(e.getMessage());
+            log.info(e.getMessage());
             return null;
         }
     }
@@ -82,7 +91,7 @@ public class CollectionTool {
 
     public static <K, T> T multiMapBitGet(int bitLeng, List<ConcurrentMap<K, T>> list, K key) {
         if (list == null || key == null) {
-//            log.info("null is null or multiMapGet list must init, for sync");
+            log.info("null is null or multiMapGet list must init, for sync");
             return null;
         }
 
@@ -103,7 +112,7 @@ public class CollectionTool {
 
     public static <K, T> T multiMapBitRemove(int bitLeng, List<ConcurrentMap<K, T>> list, K key) {
         if (list == null || key == null) {
-//            log.info("null is null or multiMapGet list must init, for sync");
+            log.info("null is null or multiMapGet list must init, for sync");
             return null;
         }
 
@@ -130,7 +139,7 @@ public class CollectionTool {
      */
     public static <K, T> T multiMapBitPut(int bitLeng, List<ConcurrentMap<K, T>> list, K key, T val) {
         if (list == null || key == null) {
-//            log.info("null is null or multiMapGet list must init, for sync");
+            log.info("null is null or multiMapGet list must init, for sync");
             return null;
         }
 
@@ -155,7 +164,7 @@ public class CollectionTool {
             map.put(key, val);
             return val;
         } catch (Exception e) {
-//            log.info(e.getMessage());
+            log.info(e.getMessage());
             return null;
         }
     }
@@ -210,9 +219,9 @@ public class CollectionTool {
         return tail.getValue();
     }
 
-    public static <T> LinkedHashSet<T> noEmptySet(LinkedHashSet<T>... sets) {
-        for (LinkedHashSet<T> set : sets) {
-            if (CollectionUtils.isNotEmpty(set)) {
+    public static <T> LinkedHashSet<T> noEmptySet(LinkedHashSet<T> ...sets){
+        for(LinkedHashSet<T> set : sets){
+            if(CollectionUtils.isNotEmpty(set)){
                 return set;
             }
         }
@@ -254,8 +263,8 @@ public class CollectionTool {
                     list.add(obj);
                 }
             } catch (Exception e) {
-//                log.info(
-//                        method.getDeclaringClass().getName() + " invoke fail methodName=" + method.getName());
+                log.info(
+                        method.getDeclaringClass().getName() + " invoke fail methodName=" + method.getName());
                 return vals;
             }
         }
@@ -292,8 +301,8 @@ public class CollectionTool {
                     vals.put(retnObj, obj);
                 }
             } catch (Exception e) {
-//                log.info(
-//                        method.getDeclaringClass().getName() + " invoke fail methodName=" + method.getName());
+                log.info(
+                        method.getDeclaringClass().getName() + " invoke fail methodName=" + method.getName());
                 return vals;
             }
         }
@@ -303,9 +312,12 @@ public class CollectionTool {
     /**
      * 将List转成Map
      *
-     * @param objs    需要抽取属性值的对象列表
-     * @param propKey 键的属性名称或者方法名称
-     * @param propVal 值的属性名称或者方法名称
+     * @param objs
+     *            需要抽取属性值的对象列表
+     * @param propKey
+     *            键的属性名称或者方法名称
+     * @param propVal
+     *            值的属性名称或者方法名称
      * @return 属性值集合
      */
     public static <T, K, V> Map<K, V> list2mapProp(List<T> objs, String propKey, String propVal, Class<K> kc,
@@ -319,7 +331,7 @@ public class CollectionTool {
                     continue;
                 }
                 if (kc.isAssignableFrom(k.getClass()) && vc.isAssignableFrom(v.getClass())) {
-                    targMap.put((K) k, (V) v);
+                    targMap.put((K)k, (V)v);
                 }
             }
         }
@@ -366,8 +378,8 @@ public class CollectionTool {
                     vals.put(keyObj, valObj);
                 }
             } catch (Exception e) {
-//                log.info(methodKey.getDeclaringClass().getName() + " invoke fail methodName=" + methodKey
-//                        .getName());
+                log.info(methodKey.getDeclaringClass().getName() + " invoke fail methodName=" + methodKey
+                        .getName());
                 return vals;
             }
         }
@@ -406,8 +418,8 @@ public class CollectionTool {
                     vals.put((K) retnObj, obj);
                 }
             } catch (Exception e) {
-//                log.info(
-//                        method.getDeclaringClass().getName() + " invoke fail methodName=" + method.getName());
+                log.info(
+                        method.getDeclaringClass().getName() + " invoke fail methodName=" + method.getName());
                 return vals;
             }
         }
@@ -499,8 +511,8 @@ public class CollectionTool {
                     vals.add((T) retnObj);
                 }
             } catch (Exception e) {
-//                log.info(
-//                        method.getDeclaringClass().getName() + " invoke fail methodName=" + method.getName());
+                log.info(
+                        method.getDeclaringClass().getName() + " invoke fail methodName=" + method.getName());
                 return vals;
             }
         }
@@ -547,8 +559,8 @@ public class CollectionTool {
                         val.add(retnObj);
                     }
                 } catch (Exception e) {
-//                    log.info(
-//                            method.getDeclaringClass().getName() + " invoke fail methodName=" + method.getName());
+                    log.info(
+                            method.getDeclaringClass().getName() + " invoke fail methodName=" + method.getName());
                     return;
                 }
             }
@@ -602,8 +614,8 @@ public class CollectionTool {
                     }
                 }
             } catch (Exception e) {
-//                log.info(
-//                        method.getDeclaringClass().getName() + " invoke fail methodName=" + method.getName());
+                log.info(
+                        method.getDeclaringClass().getName() + " invoke fail methodName=" + method.getName());
                 return vals;
             }
         }
@@ -705,7 +717,7 @@ public class CollectionTool {
                     map3.put(obj3, obj);
                 }
             } catch (Exception e) {
-//                log.info("prop1=" + prop1 + ", prop2=" + prop1 + ", prop3=" + prop3 + e.getMessage(), e);
+                log.info("prop1=" + prop1 + ", prop2=" + prop1 + ", prop3=" + prop3 + e.getMessage(), e);
                 return vals;
             }
         }

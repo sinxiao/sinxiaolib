@@ -24,6 +24,13 @@ public class SignConst {
   public static final String STR_FOUR = "4";
   public static final String STR_FIVE = "5";
 
+  // 常用百分比
+  public static final String PER25 = "0.25";
+  public static final String PER50 = "0.5";
+  public static final String PER75 = "0.75";
+  public static final String PER100 = "1";
+
+
   public static final Integer INT200 = 1000;
   public static final Integer INT_THOUSAND = 1000;
   public static final Long LONG_MILLI = 1000000L;
@@ -184,5 +191,7 @@ public class SignConst {
   public static final String USERTYPE_ADMIN = "admin";
   public static final String USERTYPE_MANAGER = "manager";
   public static final String USERTYPE_MEMBER = "member";
+  public static final String MINUS_SIGN = "-";
+
 
 }
