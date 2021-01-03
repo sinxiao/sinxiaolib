@@ -21,7 +21,7 @@ allprojects {
   
   ```
   dependencies {
-	        implementation 'com.github.sinxiao:sinxiaolib:1.3.0'
+	        implementation 'com.github.sinxiao:sinxiaolib:1.4.0'
 	}
   ```
   
