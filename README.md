@@ -21,13 +21,26 @@ allprojects {
   
   ```
   dependencies {
-	        implementation 'com.github.sinxiao:sinxiaolib:1.2.0'
+	        implementation 'com.github.sinxiao:sinxiaolib:1.3.0'
 	}
   ```
   
 ### That's it! The first time you request a project JitPack checks out the code, builds it and serves the build artifacts (jar, aar).
 
 #### 主工程(App)需要依赖以下依赖。
+
+```
+...
+
+ext.kotlin_version = '1.4.10'
+
+dependencies { 
+
+...
+
+```
+
+
 ```
 
     implementation 'org.apache.commons:commons-lang3:3.9'
@@ -59,7 +72,19 @@ allprojects {
     implementation "androidx.room:room-runtime:$room_version"
 
 ```
+### 建议在Android 标签里启用databinding功能。结束使用findViewById的调用方式。
 
+```
+android {
+...
+
+dataBinding {
+        enabled true
+    }
+    
+...
+
+```
 #### 这是一个比较完善的基于MVP的Android框架。集成了Http请求和WebSocket请求。封装了大部分开发中需要用到的函数和方法，方便提高开发效率。
 #### 没有集成MVVM框架和使用kotin。对于初创团队（没钱，工资低，招到的人能力也参差不齐），人员构成有些复杂，便于开发和推进。提高效率。
 
