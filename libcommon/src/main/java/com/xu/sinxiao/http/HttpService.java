@@ -1,5 +1,6 @@
 package com.xu.sinxiao.http;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.xu.sinxiao.common.BuildConfig;
@@ -16,6 +17,9 @@ import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
@@ -132,6 +136,59 @@ public class HttpService {
         }
         RequestBody body = RequestBody.create(json, MediaType.parse("application/json; charset=utf-8"));
         final Request request = new Request.Builder().url(url).post(body).build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                if (resultStrListener != null) {
+                    resultStrListener.onError(1000, e.getMessage());
+                }
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String body = response.body().string();
+                Log.d(TAG, "onResponse: " + body);
+                if (resultStrListener != null) {
+                    resultStrListener.onRevData(body);
+                }
+            }
+        });
+    }
+
+    public static FormBody addParamToBuilder(String reqbody, Map<String, Object> map) {
+        FormBody.Builder builder = new FormBody.Builder();
+        if (!TextUtils.isEmpty(reqbody)) {
+            if (reqbody.startsWith("?")) {
+                reqbody = reqbody.substring(1);
+            }
+            String[] params = reqbody.split("&");
+            for (int i = 0; i < params.length; i++) {
+                if (params[i].equals("")) {
+                    continue;
+                }
+                String[] kv = params[i].split("=");
+                builder.add(kv[0], kv[1]);
+            }
+        }
+        if (map != null) {
+            Iterator<Map.Entry<String, Object>> ite = map.entrySet().iterator();
+            for (; ite.hasNext(); ) {
+                Map.Entry<String, Object> kv = ite.next();
+                builder.add(kv.getKey(), kv.getValue().toString());
+            }
+        }
+        return builder.build();
+    }
+
+
+    public void asyncPostRequest(String url, HashMap<String, Object> params, final ResultStrListener resultStrListener) {
+        if (client == null) {
+            client = new OkHttpClient();
+        }
+        FormBody formBody = addParamToBuilder("", params);
+
+        final Request request = new Request.Builder().url(url).post(formBody).build();
         Call call = client.newCall(request);
         call.enqueue(new Callback() {
             @Override
