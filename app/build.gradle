@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
+ext.kotlin_version = '1.4.10'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"

@@ -1,6 +1,6 @@
 # sinxiaolib
 
-[![](https://jitpack.io/v/sinxiao/sinxiaolib.svg)](https://jitpack.io/#sinxiao/sinxiaolib)
+ [![](https://jitpack.io/v/sinxiao/sinxiaolib.svg)](https://jitpack.io/#sinxiao/sinxiaolib)
 
 ## To get a Git project into your build:
 

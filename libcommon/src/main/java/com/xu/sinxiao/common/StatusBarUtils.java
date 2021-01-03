@@ -18,6 +18,24 @@ public class StatusBarUtils {
     public static final int TYPE_FLYME = 1;
     public static final int TYPE_M = 3;
 
+
+    public static void setStatusBarTransparent(Activity activity) {
+        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //注意要清除 FLAG_TRANSLUCENT_STATUS flag
+        activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//        activity.getWindow().setStatusBarColor(activity.getResources().getColor(android.R.color.holo_red_light));//设置要显示的颜色（Color.TRANSPARENT为透明）
+        activity.getWindow().setStatusBarColor(activity.getResources().getColor(android.R.color.transparent));//设置要显示的颜色（Color.TRANSPARENT为透明）
+        setStatusBarDarkTheme(activity, true);
+    }
+
+    public static void setStatusBarColor(Activity activity, int color) {
+        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //注意要清除 FLAG_TRANSLUCENT_STATUS flag
+        activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//        activity.getWindow().setStatusBarColor(activity.getResources().getColor(android.R.color.holo_red_light));//设置要显示的颜色（Color.TRANSPARENT为透明）
+        activity.getWindow().setStatusBarColor(activity.getResources().getColor(color));//设置要显示的颜色（Color.TRANSPARENT为透明）
+    }
+
     public static int getStatusBarHeight(Context ctx) {
         int result = 0;
         int resourceId = ctx.getResources().getIdentifier("status_bar_height", "dimen", "android");

@@ -11,6 +11,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StatusBarUtils.setStatusBarColor(this, R.color.white);
+        StatusBarUtils.setStatusBarDarkTheme(this, true);
         Configer.getInstance().init(this);
         Utils.showError("xxx");
         setContentView(R.layout.main_activity);
@@ -19,6 +21,5 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.container, MainFragment.newInstance())
                     .commitNow();
         }
-        
     }
 }
