@@ -23,6 +23,7 @@ public class BottomDialog extends DialogFragment {
 
     private View.OnClickListener clickListener;
     private int layoutRes = -1;
+    private View rootView;
 
     public BottomDialog(View.OnClickListener clickListener) {
         setClickListener(clickListener);
@@ -31,6 +32,11 @@ public class BottomDialog extends DialogFragment {
     public BottomDialog(View.OnClickListener clickListener, int layoutRes) {
         setClickListener(clickListener);
         this.layoutRes = layoutRes;
+    }
+
+    public BottomDialog(View.OnClickListener clickListener, View view) {
+        setClickListener(clickListener);
+        rootView = view;
     }
 
     private void setClickListener(View.OnClickListener clickListener) {
@@ -47,6 +53,13 @@ public class BottomDialog extends DialogFragment {
     public static BottomDialog newInstance(View.OnClickListener clickListener, int layoutRes) {
         Bundle args = new Bundle();
         BottomDialog fragment = new BottomDialog(clickListener, layoutRes);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static BottomDialog newInstance(View.OnClickListener clickListener, View view) {
+        Bundle args = new Bundle();
+        BottomDialog fragment = new BottomDialog(clickListener, view);
         fragment.setArguments(args);
         return fragment;
     }
@@ -70,9 +83,12 @@ public class BottomDialog extends DialogFragment {
         if (layoutRes != -1) {
             view = inflater.inflate(layoutRes, container, false);
         } else {
-            view = inflater.inflate(R.layout.dialog_bottom, container, false);
+            if (rootView != null) {
+                view = rootView;
+            } else {
+                view = inflater.inflate(R.layout.dialog_bottom, container, false);
+            }
         }
-
         if (clickListener != null) {
             bindEvent(view);
 //      view.findViewById(R.id.txtChina).setOnClickListener(clickListener);

@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.IpPrefix;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -32,6 +34,7 @@ import com.xu.sinxiao.common.mvp.IView;
 import com.xu.sinxiao.common.mvp.MvpEvent;
 import com.xu.sinxiao.common.recyleview.CommonRecycleViewAdapter;
 import com.xu.sinxiao.common.recyleview.base.BaseViewHolderItem;
+import com.xu.sinxiao.common.view.SwipeBackLayout;
 
 import java.util.List;
 
@@ -40,8 +43,13 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
     public String NAME = this.getClass().getName();
     private RootFramelayoutBinding rootFragmentBinding;
     protected T present;
+    private boolean backSwipe = true;
 
     public BaseMVPFragment() {
+    }
+
+    public void setBackSwipe(boolean backSwipe) {
+        this.backSwipe = backSwipe;
     }
 
     public abstract T createPresent();
@@ -79,7 +87,8 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
             if (res == 0) {
                 res = R.layout.default_framelayout;
             }
-            rootFragmentBinding.contentLayout.addView(LayoutInflater.from(getContext()).inflate(res, null));
+            view = LayoutInflater.from(getContext()).inflate(res, null);
+            rootFragmentBinding.contentLayout.addView(view);
             rootFragmentBinding.contentLayout.setVisibility(View.VISIBLE);
         } else {
             rootFragmentBinding.contentLayout.addView(view);
@@ -88,9 +97,39 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
         if (present == null) {
             present = createPresent();
         }
-
-        return rootFragmentBinding.getRoot();
+        View rootView = rootFragmentBinding.getRoot();
+//        if (backSwipe) {
+//            SwipeBackLayout swipeBackLayout = new SwipeBackLayout(getContext());
+//            ViewGroup.LayoutParams layoutParams = swipeBackLayout.getLayoutParams();
+//            if (layoutParams == null) {
+//                layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ViewGroup.LayoutParams.MATCH_PARENT);
+//            } else {
+//                layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+//                layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+//            }
+//            swipeBackLayout.setLayoutParams(layoutParams);
+//            swipeBackLayout.setFragment(this, view);
+//            rootView = swipeBackLayout;
+//        }
+        return rootView;
     }
+
+    GestureDetector.SimpleOnGestureListener onGestureListener = new GestureDetector.SimpleOnGestureListener() {
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            float x = e2.getX() - e1.getX();
+            float y = e2.getY() - e2.getY();
+
+            if (x > 0) {
+                //右滑
+            } else {
+                //左滑
+                finishNow();
+            }
+            return super.onFling(e1, e2, velocityX, velocityY);
+        }
+    };
 
     @NonNull
     @Override
@@ -170,6 +209,7 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
         initView(view);
         initHeader();
         bindData();
+
         if (present != null) {
             Bundle bundle = getArguments();
             if (bundle != null) {

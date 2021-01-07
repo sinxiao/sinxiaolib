@@ -19,13 +19,15 @@ import com.xu.sinxiao.common.Configer;
 import com.xu.sinxiao.common.R;
 import com.xu.sinxiao.common.UIExecutor;
 import com.xu.sinxiao.common.Utils;
+import com.xu.sinxiao.common.mvp.IPresent;
+import com.xu.sinxiao.common.mvp.fragment.BaseMVPFragment;
 
 import java.util.HashMap;
 
 import ae.sinxiao.android.qrd.ScanQrdActivity;
 import ae.sinxiao.android.qrd.model.QrdScanResult;
 
-public class MainFragment extends Fragment {
+public class MainFragment extends BaseMVPFragment {
 
     private MainViewModel mViewModel;
     private Button btnClick;
@@ -34,11 +36,14 @@ public class MainFragment extends Fragment {
         return new MainFragment();
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.main_fragment, container, false);
+    public IPresent createPresent() {
+        return null;
+    }
+
+    @Override
+    public int getResView() {
+        return R.layout.main_fragment;
     }
 
     @Override
@@ -93,6 +98,21 @@ public class MainFragment extends Fragment {
                 });
             }
         });
+    }
+
+    @Override
+    public void initView(View view) {
+
+    }
+
+    @Override
+    public void bindData() {
+
+    }
+
+    @Override
+    public void freshData(Object object) {
+
     }
 
     @Override
