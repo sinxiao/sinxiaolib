@@ -28,14 +28,14 @@
 
     <com.xu.sinxiao.common.view.SeeMoreTextView
         android:layout_width="wrap_content"
-        app:textTipColor="@color/red"
-        app:textLessLable="xxxxx"
-        app:textMoreLable="yyyyyy"
         android:layout_height="wrap_content"
-        app:textSize="22"
         android:padding="@dimen/dp_10"
         app:text="12345678966646376236263363663666363636363843543854378584358345437583453483485834853489589435834584358435843754757348362723627237273273672673276237262763276237646646347336273"
         app:textColor="@color/white"
+        app:textLessLable="xxxxx"
+        app:textMoreLable="yyyyyy"
+        app:textSize="22"
+        app:textTipColor="@color/red"
         tools:ignore="MissingConstraints" />
 
 </LinearLayout>

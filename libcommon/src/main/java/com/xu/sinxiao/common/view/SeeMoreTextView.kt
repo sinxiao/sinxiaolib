@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
 import com.xu.sinxiao.common.R
+import com.xu.sinxiao.common.UIExecutor
 import com.xu.sinxiao.common.databinding.ViewSeemoreBinding
 
 
@@ -129,11 +130,15 @@ public class SeeMoreTextView : FrameLayout {
 
         viewSeeMore.viewSeemoreTvSeemore.setTextColor(textTipColor)
 
-        if (viewSeeMore.viewSeemoreTvlinecount.lineCount > minLines) {
-            viewSeeMore.viewSeemoreTvSeemore.visibility = View.VISIBLE
-        } else {
-            viewSeeMore.viewSeemoreTvSeemore.visibility = View.GONE
-        }
+        UIExecutor.postRunable(object : Runnable {
+            override fun run() {
+                if (viewSeeMore.viewSeemoreTvlinecount.lineCount > minLines) {
+                    viewSeeMore.viewSeemoreTvSeemore.visibility = View.VISIBLE
+                } else {
+                    viewSeeMore.viewSeemoreTvSeemore.visibility = View.GONE
+                }
+            }
+        }, 800);
     }
 
 }
