@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 apply plugin: 'com.github.dcendents.android-maven'
 
@@ -23,6 +24,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
     dataBinding {
         enabled true
     }
@@ -36,7 +42,6 @@ dependencies {
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
-
 
     compileOnly 'com.google.android.material:material:1.2.1'
 //    api project(path: ':lib_annation')

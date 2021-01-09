@@ -13,7 +13,7 @@ import com.xu.sinxiao.common.R
 import com.xu.sinxiao.common.databinding.ViewSeemoreBinding
 
 
-class SeeMoreTextView : FrameLayout {
+public class SeeMoreTextView : FrameLayout {
     //是否展开和收起的标记
     private var mIsShowAll: Boolean = false
     private var viewSeeMore: ViewSeemoreBinding;
