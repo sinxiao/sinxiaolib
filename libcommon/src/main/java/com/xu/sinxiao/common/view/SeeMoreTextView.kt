@@ -20,8 +20,8 @@ public class SeeMoreTextView : FrameLayout {
     private var minLines: Int = 3;
     private var textColor: Int = Color.BLACK;
     private var textSize: Int = 16;
-    private var textMoreLable: String = ""
-    private var textLessLable: String = ""
+    private var textMoreLable: String = context.getString(R.string.see_more)
+    private var textLessLable: String = context.getString(R.string.pack_up)
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
