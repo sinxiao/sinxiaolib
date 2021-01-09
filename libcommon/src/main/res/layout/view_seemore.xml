@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <!--    展示文字-->
+        <TextView
+            android:id="@+id/view_seemore_tvcontent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="#000"
+            android:textSize="15sp" />
+        <!--    占位置的隐藏，并且高度设置的很小，用来获取行数-->
+        <TextView
+            android:id="@+id/view_seemore_tvlinecount"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:visibility="invisible" />
+        <!--    显示更多和收起-->
+        <TextView
+            android:id="@+id/view_seemore_tv_seemore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="查看更多"
+            android:textColor="#00f"
+            android:textSize="15sp"
+            android:visibility="gone" />
+    </LinearLayout>
+</layout>

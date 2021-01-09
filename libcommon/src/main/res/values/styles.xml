@@ -210,4 +210,15 @@
         <attr name="scv_Gradient" format="reference|boolean" />
     </declare-styleable>
 
+    <declare-styleable name="SeeMoreTextView">
+        <attr name="minLine" format="integer" />
+        <attr name="text" format="reference|string" />
+        <attr name="textColor" format="color" />
+        <attr name="textSize" format="dimension|integer"></attr>
+        <attr name="textMoreColor" format="color" />
+        <attr name="textMoreSize" format="dimension|integer"></attr>
+        <attr name="textMoreLable" format="reference|string"></attr>
+        <attr name="textLessLable" format="reference|string"></attr>
+    </declare-styleable>
+
 </resources>

@@ -17,5 +17,8 @@
     <string name="sinxiao_infor">信息</string>
     <string name="no_data">没有记录</string>
     <string name="copyok">复制成功</string>
+    <string name="see_more">查看更多</string>
+    <string name="pack_up">收起</string>
+
 
 </resources>
