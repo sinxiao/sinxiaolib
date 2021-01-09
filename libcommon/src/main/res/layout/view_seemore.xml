@@ -12,6 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
+            android:includeFontPadding="false"
             android:maxLines="2"
             android:textColor="#000"
             android:textSize="15sp" />
@@ -30,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:ellipsize="end"
+            android:includeFontPadding="false"
             android:maxLines="2"
             android:text="查看更多"
             android:textColor="#00f"

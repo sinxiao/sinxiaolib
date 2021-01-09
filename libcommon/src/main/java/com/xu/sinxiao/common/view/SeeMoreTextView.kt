@@ -1,6 +1,7 @@
 package com.xu.sinxiao.common.view
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Color
 import android.text.TextUtils
 import android.util.AttributeSet
@@ -22,6 +23,7 @@ public class SeeMoreTextView : FrameLayout {
     private var textSize: Int = 16;
     private var textMoreLable: String = context.getString(R.string.see_more)
     private var textLessLable: String = context.getString(R.string.pack_up)
+    private var textTipColor: Int = Color.parseColor("#00f")
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -36,20 +38,35 @@ public class SeeMoreTextView : FrameLayout {
         if (attributes != null) {
             minLines = attributes.getInteger(R.styleable.SeeMoreTextView_minLine, 3)
 
-            val text = attributes.getString(R.styleable.SeeMoreTextView_text)
-            text?.let { setText(it) }
             textColor = attributes.getColor(R.styleable.SeeMoreTextView_textColor, Color.BLACK)
             textSize = attributes.getInteger(R.styleable.SeeMoreTextView_textSize, 16)
 
             textMoreLable = attributes.getString(R.styleable.SeeMoreTextView_textMoreLable).toString()
             if (TextUtils.isEmpty(textMoreLable)) {
-                textMoreLable = context.getString(R.string.see_more)
+                var textMoreRes = attributes.getResourceId(R.styleable.SeeMoreTextView_textMoreLable, Resources.ID_NULL)
+                if (textMoreRes == Resources.ID_NULL) {
+                    textMoreLable = context.getString(R.string.see_more)
+                } else {
+                    textLessLable = context.getString(textMoreRes)
+                }
             }
             textLessLable = attributes.getString(R.styleable.SeeMoreTextView_textLessLable).toString()
             if (TextUtils.isEmpty(textLessLable)) {
-                textLessLable = context.getString(R.string.pack_up)
+                var textLessRes = attributes.getResourceId(R.styleable.SeeMoreTextView_textLessLable, Resources.ID_NULL)
+                if (textLessRes == Resources.ID_NULL) {
+                    textLessLable = context.getString(R.string.pack_up)
+                } else {
+                    textLessLable = context.getString(textLessRes)
+                }
+
+            }
+            var textTipColorV = attributes.getColor(R.styleable.SeeMoreTextView_textTipColor, -1);
+            if (textTipColorV != -1) {
+                textTipColor = textTipColorV;
             }
 
+            val text = attributes.getString(R.styleable.SeeMoreTextView_text)
+            text?.let { setText(it) }
 //            <attr name="textColor" format="color" />
             attributes.recycle()
         }
@@ -104,8 +121,7 @@ public class SeeMoreTextView : FrameLayout {
         viewSeeMore.viewSeemoreTvcontent.textSize = textSize.toFloat()
         viewSeeMore.viewSeemoreTvlinecount.textSize = textSize.toFloat()
 
-
-//        viewSeeMore.viewSeemoreTvSeemore.setTextColor(textColor)
+        viewSeeMore.viewSeemoreTvSeemore.setTextColor(textTipColor)
 
         if (viewSeeMore.viewSeemoreTvlinecount.lineCount > minLines) {
             viewSeeMore.viewSeemoreTvSeemore.visibility = View.VISIBLE
