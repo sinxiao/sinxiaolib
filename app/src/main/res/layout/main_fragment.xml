@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.main.MainFragment">
 
     <TextView
@@ -25,4 +26,16 @@
         android:text="Click"
         app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.xu.sinxiao.common.view.SeeMoreTextView
+        android:layout_width="wrap_content"
+        app:textTipColor="@color/red"
+        app:textLessLable="xxxxx"
+        app:textMoreLable="yyyyyy"
+        android:layout_height="wrap_content"
+        app:textSize="22"
+        android:padding="@dimen/dp_10"
+        app:text="12345678966646376236263363663666363636363843543854378584358345437583453483485834853489589435834584358435843754757348362723627237273273672673276237262763276237646646347336273"
+        app:textColor="@color/white"
+        tools:ignore="MissingConstraints" />
+
+</LinearLayout>

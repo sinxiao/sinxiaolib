@@ -23,7 +23,7 @@ public class SeeMoreTextView : FrameLayout {
     private var textSize: Int = 16;
     private var textMoreLable: String = context.getString(R.string.see_more)
     private var textLessLable: String = context.getString(R.string.pack_up)
-    private var textTipColor: Int = Color.parseColor("#00f")
+    private var textTipColor: Int = Color.parseColor("#00f000")
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -41,24 +41,27 @@ public class SeeMoreTextView : FrameLayout {
             textColor = attributes.getColor(R.styleable.SeeMoreTextView_textColor, Color.BLACK)
             textSize = attributes.getInteger(R.styleable.SeeMoreTextView_textSize, 16)
 
-            textMoreLable = attributes.getString(R.styleable.SeeMoreTextView_textMoreLable).toString()
-            if (TextUtils.isEmpty(textMoreLable)) {
+            val textMoreLableV = attributes.getString(R.styleable.SeeMoreTextView_textMoreLable).toString()
+            if (TextUtils.isEmpty(textMoreLableV)) {
                 var textMoreRes = attributes.getResourceId(R.styleable.SeeMoreTextView_textMoreLable, Resources.ID_NULL)
                 if (textMoreRes == Resources.ID_NULL) {
-                    textMoreLable = context.getString(R.string.see_more)
+//                    textMoreLable = context.getString(R.string.see_more)
                 } else {
-                    textLessLable = context.getString(textMoreRes)
+                    textMoreLable = context.getString(textMoreRes)
                 }
+            } else {
+                textMoreLable = textMoreLableV
             }
-            textLessLable = attributes.getString(R.styleable.SeeMoreTextView_textLessLable).toString()
-            if (TextUtils.isEmpty(textLessLable)) {
+            val textLessLableV = attributes.getString(R.styleable.SeeMoreTextView_textLessLable).toString()
+            if (TextUtils.isEmpty(textLessLableV)) {
                 var textLessRes = attributes.getResourceId(R.styleable.SeeMoreTextView_textLessLable, Resources.ID_NULL)
                 if (textLessRes == Resources.ID_NULL) {
-                    textLessLable = context.getString(R.string.pack_up)
+//                    textLessLable = context.getString(R.string.pack_up)
                 } else {
                     textLessLable = context.getString(textLessRes)
                 }
-
+            } else {
+                textLessLable = textLessLableV
             }
             var textTipColorV = attributes.getColor(R.styleable.SeeMoreTextView_textTipColor, -1);
             if (textTipColorV != -1) {
@@ -108,6 +111,9 @@ public class SeeMoreTextView : FrameLayout {
      * 设置文字
      */
     fun setText(text: String) {
+        if (textMoreLable.equals("null")) {
+            textMoreLable = context.getText(R.string.see_more).toString()
+        }
         //每次设置文字后都要进行重置
         viewSeeMore.viewSeemoreTvcontent.text = text
         viewSeeMore.viewSeemoreTvlinecount.text = text
