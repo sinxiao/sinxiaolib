@@ -18,6 +18,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelStore;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -345,6 +346,19 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
         CommonRecycleViewAdapter commonRecycleViewAdapter = new CommonRecycleViewAdapter();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(commonRecycleViewAdapter);
+        commonRecycleViewAdapter.updateData(datas);
+    }
+
+    /**
+     * @param recyclerView
+     * @param datas
+     * @param columnSize
+     */
+    public void bindGridData(RecyclerView recyclerView, List<BaseViewHolderItem> datas, int columnSize) {
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), columnSize);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        CommonRecycleViewAdapter commonRecycleViewAdapter = new CommonRecycleViewAdapter();
         recyclerView.setAdapter(commonRecycleViewAdapter);
         commonRecycleViewAdapter.updateData(datas);
     }

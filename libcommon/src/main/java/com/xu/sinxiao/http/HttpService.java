@@ -73,6 +73,10 @@ public class HttpService {
 //        client.socketFactory();
     }
 
+    public OkHttpClient getHttpClient() {
+        return client;
+    }
+
     public void setClient(OkHttpClient client) {
         this.client = client;
     }
@@ -148,7 +152,9 @@ public class HttpService {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String body = response.body().string();
-                Log.d(TAG, "onResponse: " + body);
+                if (BuildConfig.DEBUG) {
+                    Log.d(TAG, "onResponse: " + body);
+                }
                 if (resultStrListener != null) {
                     resultStrListener.onRevData(body);
                 }
@@ -186,6 +192,9 @@ public class HttpService {
         if (client == null) {
             client = new OkHttpClient();
         }
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "url : " + url);
+        }
         FormBody formBody = addParamToBuilder("", params);
 
         final Request request = new Request.Builder().url(url).post(formBody).build();
@@ -201,13 +210,120 @@ public class HttpService {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String body = response.body().string();
-                Log.d(TAG, "onResponse: " + body);
+                if (BuildConfig.DEBUG) {
+                    Log.d(TAG, "onResponse: " + body);
+                }
                 if (resultStrListener != null) {
                     resultStrListener.onRevData(body);
                 }
             }
         });
     }
+
+    public String synchronizedPostRequest(String url, HashMap<String, Object> params) throws IOException {
+        if (client == null) {
+            client = new OkHttpClient();
+        }
+
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "onResponse: " + url);
+        }
+        FormBody formBody = addParamToBuilder("", params);
+        final Request request = new Request.Builder().url(url).post(formBody).build();
+        Call call = client.newCall(request);
+        try {
+            Response response = call.execute();
+            if (response != null) {
+                String body = response.body().string();
+                if (BuildConfig.DEBUG) {
+                    Log.d(TAG, "onResponse: " + body);
+                }
+                return body;
+            }
+        } catch (IOException e) {
+            throw e;
+        }
+        return null;
+    }
+
+    public String synchronizedPostRequest(String url, String json) throws IOException {
+        if (client == null) {
+            client = new OkHttpClient();
+        }
+        RequestBody body = RequestBody.create(json, MediaType.parse("application/json; charset=utf-8"));
+        final Request request = new Request.Builder().url(url).post(body).build();
+        Call call = client.newCall(request);
+        try {
+            Response response = call.execute();
+            if (response != null) {
+                String bodyStr = response.body().string();
+                if (BuildConfig.DEBUG) {
+                    Log.d(TAG, "onResponse: " + bodyStr);
+                }
+                return bodyStr;
+            }
+        } catch (IOException e) {
+            throw e;
+        }
+        return null;
+    }
+
+    public String synchronizedGetRequest(String url) throws IOException {
+        if (client == null) {
+            client = new OkHttpClient();
+        }
+        Logger.e("request ::: " + url);
+        final Request request = new Request.Builder()
+                .url(url)
+                .get()//默认就是GET请求，可以不写
+                .build();
+        Call call = client.newCall(request);
+        try {
+            Response response = call.execute();
+            if (response != null) {
+                String bodyStr = response.body().string();
+                if (BuildConfig.DEBUG) {
+                    Log.d(TAG, "onResponse: " + bodyStr);
+                }
+                return bodyStr;
+            }
+        } catch (IOException e) {
+            throw e;
+        }
+        return null;
+//        call.enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                if (BuildConfig.DEBUG) {
+//                    Logger.d(TAG + "onFailure: " + e.getMessage());
+//                }
+//
+//                if (resultStrListener != null) {
+//                    resultStrListener.onError(1000, e.getMessage());
+//                }
+////                try{
+////                    e.printStackTrace();
+////                }catch (Exception e){
+////
+////                }
+//
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+////                Log.d(TAG, "onResponse: " + response.body().string());
+//                String body = response.body().string();
+//                if (BuildConfig.DEBUG) {
+////                    Logger.d("code ::: " + response.code());
+////                    Logger.d(TAG + " onResponse::  " + body);
+//                }
+//                if (resultStrListener != null) {
+//                    resultStrListener.onRevData(body);
+//                }
+//            }
+//        });
+    }
+
 
     public void asyncDeleteRequest(String url, final ResultStrListener resultStrListener) {
         final Request request = new Request.Builder().url(url).delete().build();
