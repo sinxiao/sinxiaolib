@@ -3,6 +3,8 @@ package com.xu.sinxiao.common;
 import android.os.Handler;
 import android.os.HandlerThread;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -21,9 +23,13 @@ public class BackgroundExecutor {
 
     public static void post(Runnable task) {
         if (handler == null) {
-            handlerThread.setPriority(Thread.MIN_PRIORITY);
-            handlerThread.start();
-            handler = new Handler(handlerThread.getLooper());
+            try {
+                handlerThread.setPriority(Thread.MIN_PRIORITY);
+                handlerThread.start();
+                handler = new Handler(handlerThread.getLooper());
+            } catch (Exception e) {
+                handler = null;
+            }
         }
 //        handler.post(task);
         executors.submit(task);
@@ -31,16 +37,28 @@ public class BackgroundExecutor {
 
     public static void postAfter(final Runnable task, long after) {
         if (handler == null) {
-            handlerThread.setPriority(Thread.MIN_PRIORITY);
-            handlerThread.start();
-            handler = new Handler(handlerThread.getLooper());
-        }
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                executors.submit(task);
+            try {
+                handlerThread.setPriority(Thread.MIN_PRIORITY);
+                handlerThread.start();
+                handler = new Handler(handlerThread.getLooper());
+            } catch (Exception e) {
+                handler = null;
             }
-        }, after);
+        }
+        if (handler != null) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    executors.submit(task);
+                }
+            }, after);
+        } else {
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    executors.submit(task);
+                }
+            }, after);
+        }
     }
 }

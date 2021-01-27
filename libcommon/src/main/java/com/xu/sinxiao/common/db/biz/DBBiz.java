@@ -21,6 +21,7 @@ import java.util.List;
  */
 public class DBBiz<T extends BaseDBModel> {
     private boolean isEncrypt = false;
+
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public DBBiz() {
