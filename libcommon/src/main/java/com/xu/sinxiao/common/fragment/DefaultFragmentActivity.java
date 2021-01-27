@@ -54,11 +54,13 @@ public class DefaultFragmentActivity extends BaseActivity {
         String json = Utils.getStringValue(KEY);
         ParameterizedTypeImpl parameterizedType = new ParameterizedTypeImpl(HashMap.class, new Type[]{String.class, String.class});
         HashMap<String, String> map = GsonUtils.parserBean(json, parameterizedType);
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            try {
-                concurrentHashMap.put(entry.getKey(), Class.forName(entry.getValue()));
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+        if (map != null) {
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                try {
+                    concurrentHashMap.put(entry.getKey(), Class.forName(entry.getValue()));
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -146,12 +148,30 @@ public class DefaultFragmentActivity extends BaseActivity {
             intiValues();
             fragment = concurrentHashMap.get(page);
         }
+        BaseFragment pageFragment = null;
         if (fragment == null) {
-            Logger.e("fragment is >> null ");
+            Logger.e("fragment is >> null   page name >> " + page);
+            try {
+                try {
+                    pageFragment = (BaseFragment) Class.forName(page).newInstance();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         }
         try {
             Logger.e("page is >> " + page);
-            BaseFragment baseFragment = (BaseFragment) fragment.newInstance();
+            BaseFragment baseFragment = null;
+            if (pageFragment != null) {
+                baseFragment = pageFragment;
+            } else {
+                baseFragment = (BaseFragment) fragment.newInstance();
+            }
+
             if (baseFragment != null && bundle != null) {
                 baseFragment.setArguments(bundle);
             }

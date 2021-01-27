@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.xu.sinxiao.common.fragment.DefaultFragmentActivity;
+import com.xu.sinxiao.common.ui.main.LoginFragment;
 import com.xu.sinxiao.common.ui.main.MainFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,7 +21,15 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, MainFragment.newInstance())
+//                    .commitAllowingStateLoss()
                     .commitNow();
         }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        DefaultFragmentActivity.start(this, LoginFragment.PAGE_NAME);
     }
 }

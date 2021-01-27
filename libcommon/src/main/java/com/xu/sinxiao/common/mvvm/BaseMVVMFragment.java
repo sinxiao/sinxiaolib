@@ -1,12 +1,8 @@
-package com.xu.sinxiao.common.mvp.fragment;
+package com.xu.sinxiao.common.mvvm;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.IpPrefix;
 import android.os.Bundle;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,56 +10,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelStore;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xu.sinxiao.common.DialigUtils;
 import com.xu.sinxiao.common.R;
 import com.xu.sinxiao.common.ToastUtils;
 import com.xu.sinxiao.common.UIExecutor;
+import com.xu.sinxiao.common.base.Event;
+import com.xu.sinxiao.common.base.Status;
 import com.xu.sinxiao.common.databinding.RootFramelayoutBinding;
 import com.xu.sinxiao.common.fragment.BaseFragment;
 import com.xu.sinxiao.common.logger.Logger;
-import com.xu.sinxiao.common.mvp.BasePresent;
-import com.xu.sinxiao.common.mvp.IPresent;
 import com.xu.sinxiao.common.mvp.IView;
-import com.xu.sinxiao.common.mvp.MvpEvent;
-import com.xu.sinxiao.common.recyleview.CommonRecycleViewAdapter;
 import com.xu.sinxiao.common.recyleview.base.BaseViewHolderItem;
-import com.xu.sinxiao.common.view.SwipeBackLayout;
 
 import java.util.List;
 
-public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment implements IView {
-
-    public String NAME = this.getClass().getName();
+public abstract class BaseMVVMFragment<T extends BaseViewModel> extends BaseFragment implements IView {
+    private static ViewModelProvider viewModelProvider = null;
+    protected String NAME = this.getClass().getName();
+    protected T viewModel;
     private RootFramelayoutBinding rootFragmentBinding;
-    protected T present;
-    private boolean backSwipe = true;
 
-    public BaseMVPFragment() {
-    }
+    public BaseMVVMFragment() {
 
-    public void setBackSwipe(boolean backSwipe) {
-        this.backSwipe = backSwipe;
-    }
-
-    public abstract T createPresent();
-
-    public abstract int getResView();
-
-    public View getMainView() {
-        return null;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     public void showDataView() {
@@ -74,6 +46,19 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
 
     public <T extends ViewDataBinding> T getViewDataBind(int resLayout) {
         return DataBindingUtil.inflate(LayoutInflater.from(getContext()), resLayout, null, false);
+    }
+
+    public abstract Class<T> getViewModelType();
+
+    public void bindViewModel(Class<T> clazz) {
+        //AppCompatActivity和Fragment这两个页面对象
+        //父类ComponentActivity和Fragment实现了LifecycleOwner对象
+        //父类FragmentActivity实现了ViewModelStoreOwner对象，又继承了ComponentActivity
+        if (viewModelProvider == null) {
+            viewModelProvider = new ViewModelProvider(this.getViewModelStore(),
+                    new ViewModelProvider.NewInstanceFactory());
+        }
+        viewModel = viewModelProvider.get(clazz);
     }
 
     @Nullable
@@ -95,8 +80,8 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
             rootFragmentBinding.contentLayout.addView(view);
             rootFragmentBinding.contentLayout.setVisibility(View.VISIBLE);
         }
-        if (present == null) {
-            present = createPresent();
+        if (viewModel == null) {
+            bindViewModel(getViewModelType());
         }
         View rootView = rootFragmentBinding.getRoot();
 //        if (backSwipe) {
@@ -115,124 +100,67 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
 //        }
         return rootView;
     }
+//    public abstract BaseViewModel createViewModel();
 
-    GestureDetector.SimpleOnGestureListener onGestureListener = new GestureDetector.SimpleOnGestureListener() {
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            float x = e2.getX() - e1.getX();
-            float y = e2.getY() - e2.getY();
+    public abstract int getResView();
 
-            if (x > 0) {
-                //右滑
-            } else {
-                //左滑
-                finishNow();
-            }
-            return super.onFling(e1, e2, velocityX, velocityY);
-        }
-    };
-
-    @NonNull
-    @Override
-    public Lifecycle getLifecycle() {
-        return super.getLifecycle();
+    public View getMainView() {
+        return null;
     }
 
-    @NonNull
-    @Override
-    public LiveData<LifecycleOwner> getViewLifecycleOwnerLiveData() {
-        return super.getViewLifecycleOwnerLiveData();
-    }
+//    public void  bindData(){
+//
+//    }
 
-    @NonNull
-    @Override
-    public ViewModelStore getViewModelStore() {
-        return super.getViewModelStore();
-    }
-
-    @Nullable
-    @Override
-    public Object getSharedElementReturnTransition() {
-        return super.getSharedElementReturnTransition();
-    }
-
-    @Nullable
-    @Override
-    public Object getSharedElementEnterTransition() {
-        return super.getSharedElementEnterTransition();
-    }
-
-    @Nullable
-    @Override
-    public Object getReturnTransition() {
-        return super.getReturnTransition();
-    }
-
-    @Nullable
-    @Override
-    public Object getReenterTransition() {
-        return super.getReenterTransition();
-    }
-
-    @Nullable
-    @Override
-    public Object getExitTransition() {
-        return super.getExitTransition();
-    }
-
-    @Nullable
-    @Override
-    public Object getEnterTransition() {
-        return super.getEnterTransition();
-    }
-
-    @Nullable
-    @Override
-    public Context getContext() {
-        return super.getContext();
-    }
-
-    @NonNull
-    @Override
-    public LifecycleOwner getViewLifecycleOwner() {
-        return super.getViewLifecycleOwner();
-    }
-
-    @Nullable
-    @Override
-    public View getView() {
-        return super.getView();
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         initView(view);
         initHeader();
-        bindData();
-
-        if (present != null) {
+        if (viewModel != null) {
             Bundle bundle = getArguments();
             if (bundle != null) {
-                present.dispatchEvent(MvpEvent.init(NAME, MvpEvent.TYPE_INIT, bundle));
+                viewModel.dispatchEvent(Event.init(NAME, Event.TYPE_INIT, bundle));
             } else {
-                present.dispatchEvent(MvpEvent.init(NAME, MvpEvent.TYPE_INIT));
+                viewModel.dispatchEvent(Event.init(NAME, Event.TYPE_INIT));
             }
+
+            viewModel.data.observe(getViewLifecycleOwner(), new Observer() {
+                @Override
+                public void onChanged(Object o) {
+                    if (o != null) {
+                        if (o instanceof Status) {
+                            Status status = (Status) o;
+                            if (status.getStatusCode() == Status.STATUS_EMPTY) {
+                                showErrorView(getString(R.string.no_data));
+                            } else if (status.getStatusCode() == Status.STATUS_LOADING) {
+                                showLoading();
+                            } else if (status.getStatusCode() == Status.STATUS_ERROR) {
+                                String errorStr = getString(R.string.sinxiao_net_error);
+                                if (status.getData() instanceof String) {
+                                    errorStr = (String) status.getData();
+                                }
+                                showErrorView(errorStr);
+                            } else if (status.getStatusCode() == Status.STATUS_NORMAL) {
+                                dissLoading();
+                            }
+                        }
+                    }
+                }
+            });
         }
-        if (present != null) {
-            present.fetchData();
-        }
+
+//        if (viewModel != null) {
+//            viewModel.fetchData();
+//        }
     }
 
     /**
      * 一般是绑定，控件的事件
      */
     public abstract void initView(View view);
-
-    /**
-     * 向控件上绑定数据
-     */
-    public abstract void bindData();
 
     public void initHeader() {
 
@@ -251,7 +179,6 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
     @Override
     public void showError(String error) {
         DialigUtils.showErrorDialog(getContext(), error);
-
     }
 
     @Override
@@ -277,7 +204,7 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
 
     @Override
     public void launch(@NonNull Intent intent) {
-
+        getActivity().startActivity(intent);
     }
 
     @Override
@@ -291,9 +218,9 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
 
                 @Override
                 public void onClick(View v) {
-                    if (present != null) {
+                    if (viewModel != null) {
                         rootFragmentBinding.layoutError.setVisibility(View.GONE);
-                        present.fetchData();
+                        viewModel.fetchData();
                     }
                 }
             });
@@ -337,9 +264,6 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (present != null) {
-            present.destory();
-        }
     }
 
     public void bindData(RecyclerView recyclerView, List<BaseViewHolderItem> datas) {
@@ -354,4 +278,5 @@ public abstract class BaseMVPFragment<T extends IPresent> extends BaseFragment i
     public void bindGridData(RecyclerView recyclerView, List<BaseViewHolderItem> datas, int columnSize) {
         super.bindGridData(recyclerView, datas, columnSize);
     }
+
 }

@@ -63,6 +63,7 @@ public class HttpService {
         client = new OkHttpClient.Builder()
                 //http数据log，日志中打印出HTTP请求&响应数据
                 .addInterceptor(loggingInterceptor)
+                .dns(new HttpDns()) //此操作针对国内，全球范围的dns加速，未解决
                 .callTimeout(90, TimeUnit.SECONDS)
                 .readTimeout(90,
                         TimeUnit.SECONDS).writeTimeout(90, TimeUnit.SECONDS)
@@ -70,7 +71,7 @@ public class HttpService {
                 .sslSocketFactory(getDefaultSSLSocketFactory(), getDefaultX509TrustManager())
                 .hostnameVerifier(getDefaultHostnameVerifier())
                 .cookieJar(new CookieJarImpl()).build();
-//        client.socketFactory();
+
     }
 
     public OkHttpClient getHttpClient() {

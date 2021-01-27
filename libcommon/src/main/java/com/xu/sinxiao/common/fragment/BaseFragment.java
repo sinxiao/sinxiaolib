@@ -18,8 +18,15 @@ import android.view.animation.Animation;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.xu.sinxiao.common.recyleview.CommonRecycleViewAdapter;
+import com.xu.sinxiao.common.recyleview.base.BaseViewHolderItem;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class BaseFragment extends Fragment {
     public static interface FragmentRouterInterface {
@@ -283,6 +290,27 @@ public class BaseFragment extends Fragment {
     @Override
     public void registerForContextMenu(@NonNull View view) {
         super.registerForContextMenu(view);
+    }
+
+    public void bindData(RecyclerView recyclerView, List<BaseViewHolderItem> datas) {
+        CommonRecycleViewAdapter commonRecycleViewAdapter = new CommonRecycleViewAdapter();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(commonRecycleViewAdapter);
+        commonRecycleViewAdapter.updateData(datas);
+    }
+
+    /**
+     * @param recyclerView
+     * @param datas
+     * @param columnSize
+     */
+    public void bindGridData(RecyclerView recyclerView, List<BaseViewHolderItem> datas, int columnSize) {
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), columnSize);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        CommonRecycleViewAdapter commonRecycleViewAdapter = new CommonRecycleViewAdapter();
+        recyclerView.setAdapter(commonRecycleViewAdapter);
+        commonRecycleViewAdapter.updateData(datas);
     }
 }
 

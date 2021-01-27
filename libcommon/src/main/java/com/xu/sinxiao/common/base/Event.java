@@ -1,15 +1,10 @@
-package com.xu.sinxiao.common.mvp;
+package com.xu.sinxiao.common.base;
+
+import com.xu.sinxiao.common.mvp.MvpEvent;
 
 import java.io.Serializable;
-import java.util.Objects;
 
-/**
- * 使用 Event 来代替
- *
- * @param <T>
- */
-@Deprecated
-public class MvpEvent<T> implements Serializable {
+public class Event<T> extends MvpEvent<T> implements Serializable {
     public static final String TYPE_INIT = "init";
     public static final String TYPE_BACK = "back";
     public static final String TYPE_ENTER = "enter";
@@ -51,23 +46,23 @@ public class MvpEvent<T> implements Serializable {
         this.object = object;
     }
 
-    public static MvpEvent init(String name, String type) {
-        MvpEvent mvpEvent = new MvpEvent();
+    public static Event init(String name, String type) {
+        Event mvpEvent = new Event();
         mvpEvent.name = name;
         mvpEvent.type = type;
         return mvpEvent;
     }
 
-    public static MvpEvent initWithObject(String name, String type, Object object) {
-        MvpEvent mvpEvent = new MvpEvent();
+    public static Event initWithObject(String name, String type, Object object) {
+        Event mvpEvent = new Event();
         mvpEvent.name = name;
         mvpEvent.type = type;
         mvpEvent.object = object;
         return mvpEvent;
     }
 
-    public static <T> MvpEvent init(String name, String type, T value) {
-        MvpEvent<T> mvpEvent = new MvpEvent<>();
+    public static <T> Event init(String name, String type, T value) {
+        Event<T> mvpEvent = new Event<>();
         mvpEvent.name = name;
         mvpEvent.type = type;
         mvpEvent.value = value;
