@@ -56,7 +56,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:addTextChangeListener="@{loginData.textChanged}"
                 android:text="@={loginData.edtCode}" />
         </LinearLayout>
 
@@ -65,7 +64,7 @@
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@={loginData.loginClick}"
+            android:onClick="@{loginData.loginClick}"
             android:text="登 录" />
     </LinearLayout>
 

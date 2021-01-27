@@ -22,13 +22,13 @@ public class Param {
         return id;
     }
 
-//    public String getKey_() {
-//        return key_;
-//    }
-//
-//    public void setKey_(String key_) {
-//        this.key_ = key_;
-//    }
+    public String getKey_() {
+        return key_;
+    }
+
+    public void setKey_(String key_) {
+        this.key_ = key_;
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -42,13 +42,13 @@ public class Param {
         this.type = type;
     }
 
-    public String getKey() {
-        return key_;
-    }
-
-    public void setKey(String key_) {
-        this.key_ = key_;
-    }
+//    public String getKey() {
+//        return key_;
+//    }
+//
+//    public void setKey(String key_) {
+//        this.key_ = key_;
+//    }
 
     public String getValue() {
         return value;

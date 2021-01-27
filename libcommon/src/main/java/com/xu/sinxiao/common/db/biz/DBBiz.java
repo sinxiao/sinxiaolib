@@ -35,7 +35,7 @@ public class DBBiz<T extends BaseDBModel> {
         BackgroundExecutor.post(() -> {
             BaseDBModel baseDBModel = (BaseDBModel) t;
             Param param = new Param();
-            param.setKey(baseDBModel.getKey());
+            param.setKey_(baseDBModel.getKey());
             param.setType(baseDBModel.getType());
             List<Param> params = DataBaseService.getInstance().getAppDB().paramsDao().loadParamsByKeyAndType(baseDBModel.getKey(), baseDBModel.getType());
             if (params != null && params.size() > 0) {

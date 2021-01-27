@@ -1,4 +1,6 @@
 package com.xu.sinxiao.common.ui.main;
 
-public class MainBean {
+import com.xu.sinxiao.common.base.Status;
+
+public class MainBean extends Status {
 }
