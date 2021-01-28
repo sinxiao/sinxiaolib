@@ -10,7 +10,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
 public class BackgroundExecutor {
-    private static ExecutorService executors = Executors.newFixedThreadPool(16, new ThreadFactory() {
+    private static int size = Runtime.getRuntime().availableProcessors();
+    private static ExecutorService executors = Executors.newFixedThreadPool(size + 2, new ThreadFactory() {
         @Override
         public Thread newThread(Runnable r) {
             Thread thread = new Thread(r);
