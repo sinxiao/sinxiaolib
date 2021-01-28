@@ -11,11 +11,12 @@ import java.util.concurrent.ThreadFactory;
 
 public class BackgroundExecutor {
     private static int size = Runtime.getRuntime().availableProcessors();
-    private static ExecutorService executors = Executors.newFixedThreadPool(size + 2, new ThreadFactory() {
+    private static ExecutorService executors = Executors.newFixedThreadPool(size * 2, new ThreadFactory() {
         @Override
         public Thread newThread(Runnable r) {
             Thread thread = new Thread(r);
             thread.setPriority(Thread.MIN_PRIORITY);
+            Executors.defaultThreadFactory();
             return thread;
         }
     });
