@@ -5,6 +5,7 @@ import android.os.HandlerThread;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -15,6 +16,7 @@ public class BackgroundExecutor {
         @Override
         public Thread newThread(Runnable r) {
             Thread thread = new Thread(r);
+            thread.setName("BackgroundExecutor_" + UUID.randomUUID().toString());
             thread.setPriority(Thread.MIN_PRIORITY);
             return thread;
         }

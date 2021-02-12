@@ -20,6 +20,7 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
@@ -60,7 +61,7 @@ public class HttpService {
         } else {
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
         }
-        client = new OkHttpClient.Builder()
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 //http数据log，日志中打印出HTTP请求&响应数据
                 .addInterceptor(loggingInterceptor)
                 .dns(new HttpDns()) //此操作针对国内，全球范围的dns加速，未解决
@@ -70,8 +71,13 @@ public class HttpService {
                 .connectTimeout(130, TimeUnit.SECONDS)
                 .sslSocketFactory(getDefaultSSLSocketFactory(), getDefaultX509TrustManager())
                 .hostnameVerifier(getDefaultHostnameVerifier())
-                .cookieJar(new CookieJarImpl()).build();
-
+                .cookieJar(new CookieJarImpl());
+        Vector<Interceptor> vector = HttpInterceptorHelper.getInstance().getIntercepts();
+        for (Interceptor interceptor : vector) {
+            builder.addInterceptor(interceptor);
+        }
+        HttpInterceptorHelper.getInstance().clear();
+        client = builder.build();
     }
 
     public OkHttpClient getHttpClient() {
