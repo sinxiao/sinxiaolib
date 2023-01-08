@@ -31,10 +31,18 @@ public class Configer {
     private Configer() {
     }
 
+     private boolean initDB = false;
+
+    public void setInitDBServie(boolean initDB) {
+        this.initDB = initDB;
+    }
+
     public void init(Context context) {
         this.context = context;
         packageName = context.getPackageName();
         RSAEncryptUtil.getInstance().init(context, null);
-        DataBaseService.getInstance().init(context);
+        if (initDB) {
+            DataBaseService.getInstance().init(context);
+        }
     }
 }
